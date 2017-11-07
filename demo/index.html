@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="da" style="font-size: 100%">
+<head>
+	<title>fcoo.dk - jquery-bootstrap-message - Demo</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+
+	<meta name='copyright' content='FCOO'>
+	<meta name='owner' content='FCOO'>
+
+    <link  href="bower_components.css" rel="stylesheet">	
+    <link  href="font-awesome.css" rel="stylesheet">
+    <!-- <link  href="fcoo-fontawesome.css" rel="stylesheet">	 -->
+    <style>
+        html, body {
+            height:100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+	
+	
+	<script src="bower_components.js"></script>
+   <script src="../src/jquery-bootstrap-message-BsMessage.js"></script>
+    <script src="../src/jquery-bootstrap-message.js"></script>
+
+	<script>
+        i18next.init();        
+        i18next.changeLanguage('en');
+
+        $.valueFormat.add({ 
+            id: 'myDateFormat', 
+            format: function( moment ){
+                return moment.format('DD-MM-YY HH:mm');
+            }
+        });
+
+        Promise.defaultErrorHandler = function( reason ){
+            console.log('* ERROR *');
+            console.log(reason);
+            console.log('*********');
+        };
+
+
+
+        var messageGroup = $.bsMessageGroup({
+            url           : 'data/test.json',
+_reloadPeriod: 'PT20S',
+            header        : {icon:'fa-i-blocked', text: {da:'Meddelser', en:'Messages'}},
+            showStatus    : true,
+            showType      : true,
+            showTypeColor : true,
+            showTypeHeader: true,
+            vfFormat      : 'myDateFormat', 
+
+            //sortBy: ['DATE', 'STATUS'],
+            //sortDesc: false,
+            loadStatus     : function( message) { return (message.options.index % 2) == 1; },
+            onStartLoading : function( messageGroup ){ console.log('Start loading'); },
+            onFinishLoading: function( messageGroup ){ console.log('Finish loading'); },
+            onChange       : function( messageGroup ){ console.log('onChange', messageGroup.getAllStatus()); },
+        });
+
+
+	    $(function() {
+            $('body').on('click', function(e){ 
+                if (e.target == $('body')[0])
+                    messageGroup.asBsModal().show();
+            });
+            $('#lang').on('click', function(){ 
+                i18next.changeLanguage( i18next.language == 'en' ? 'da' : 'en' );
+                $('*').localize();
+                messageGroup.setLanguage( i18next.language );
+
+            });
+        });
+
+    </script>
+    <button id="lang">Skift sprog/Change language</button>
+</body>
+</html>

@@ -1,0 +1,100 @@
+{
+    "defaults": {
+        "type": "info",
+        "becomeRead": "P1Y"
+    },
+    "messages": [
+        {
+            "id": "6",
+            "type": "warning",
+            "url": "data/browser/da.md",
+            "title": {"da":"Test af Operativsystemer og Browsere", "en":"Test of Operating Systems and Browsers"},
+            "link": "http://ifm.fcoo.dk/browser/"
+        },
+        {
+            "id": "5",
+            "type": "help",
+            "url": "",
+            "title": {"da":">> >> >> >> >> >> PUBLISH Dette er en meget lang hjælp-besked 5, der handler om alt muligt", "en":">> >> >> >> >> >> >> >> PUBLISH This is a HELP message 5"},
+            "date": "2016-11-01",
+            "publish": false,
+            "expire" : "P2Y"
+        },
+        {
+            "id": "4",
+            "type": "warning",
+            "url": "",
+            "title": {"da":"Dette er en meget lang warning-besked 4, der handler om alt muligt", "en":"This is a warning message 4"}
+        },
+        {
+            "id": "3",
+            "type": "error",
+            "url": "",
+            "title": {"da":"Dette er en meget lang error-besked, der handler om alt muligt", "en":"This is a error message"}
+        },
+        {
+            "id": "2.5",
+            "date": "2017-01-01",
+            "url": "",
+            "publish": false,
+            "title": {"da":"IKKE PUBLISERET", "en":"NOT PUBLISHED"}
+        },
+        {
+            "id": "2",
+            "date": "2017-01-01",
+            "type": "error",
+            "url": "data/browser/da.md",
+            "title": {"da":"Dette er info-besked 2", "en":"This is a info message 2"}
+        },
+        {
+            "id": "1",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "10",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "11",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "12",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "13",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "14",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "15",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        },
+        {
+            "id": "16",
+            "date": "2017-01-01",
+            "url": "",
+            "title": {"da":"Dette er info-besked", "en":"This is a info message"}
+        }
+
+    ]
+
+}

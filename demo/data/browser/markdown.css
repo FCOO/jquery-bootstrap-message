@@ -1,0 +1,16 @@
+div.icon {
+    display: inline-block;
+    background-size: cover;
+    width : 24px;
+    height: 24px;
+}
+
+div.check   { background-image: url(images/check.png);  }
+div.firefox { background-image: url(images/firefox.png);}
+div.chrome  { background-image: url(images/chrome.png); }
+div.edge    { background-image: url(images/edge.png);   }
+div.ie11    { background-image: url(images/ie11.png);   }
+div.opera   { background-image: url(images/opera.jpg);  }
+div.safari  { background-image: url(images/safari.png); }
+
+
