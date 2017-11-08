@@ -134,6 +134,14 @@
         **********************************************/
         asBsModal: function( show ){
             this.setStatus( true );
+            var footer = this.parent.options.vfFormat ? {
+                            vfValue  : this.options.date,
+                            vfFormat : this.parent.options.vfFormat,
+                            vfOptions: this.parent.options.vfOptions,
+                            textClass: 'ml-auto'
+                         }
+                         : null;
+
             if (this.options.url){
                 //Show the message in a BsMarkdown
                 this.bsMarkdown =
@@ -144,17 +152,11 @@
                         languages: this.parent.options.languages,
                         language : this.parent.options.language,
 
-                        header   : {
+                        header : {
                             icon : this.parent.options.showType ? $.bsNotyIcon[this.options.type] : '',
                             text : this.options.title
                         },
-                        footer: this.parent.options.vfFormat ? {
-                                    vfValue  : this.options.date,
-                                    vfFormat : this.parent.options.vfFormat,
-                                    vfOptions: this.parent.options.vfOptions,
-                                    textClass: 'ml-auto'
-                                }
-                                : null,
+                        footer : footer,
                         loading: this.parent.options.loading
                     });
 
@@ -176,8 +178,8 @@
                     content: $('<div/>')
                                 .addClass('text-center')
                                 ._bsAddHtml( {text: this.options.title }),
-
-                    show: false
+                    footer : footer,
+                    show   : false
                 });
 
             }
@@ -514,11 +516,13 @@
                 this.bsModal ||
                 this.asBsTable().asModal({
                     header: this.options.header,
-                    buttons: [{
-                        icon   : this._getStatusIcon( true, true ),
-                        text   : {da:'Márker alle som læst', en:'Mark all as read'},
-                        onClick: function(){ _this.setAllStatus( true ); }
-                    }],
+                    buttons: this.options.showStatus ?
+                                [{
+                                    icon   : this._getStatusIcon( true, true ),
+                                    text   : {da:'Márker alle som læst', en:'Mark all as read'},
+                                    onClick: function(){ _this.setAllStatus( true ); }
+                                }]
+                             : null,
                     show  : false
                 });
 

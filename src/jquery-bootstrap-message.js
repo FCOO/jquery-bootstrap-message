@@ -320,11 +320,13 @@
                 this.bsModal ||
                 this.asBsTable().asModal({
                     header: this.options.header,
-                    buttons: [{
-                        icon   : this._getStatusIcon( true, true ),
-                        text   : {da:'Márker alle som læst', en:'Mark all as read'},
-                        onClick: function(){ _this.setAllStatus( true ); }
-                    }],
+                    buttons: this.options.showStatus ?
+                                [{
+                                    icon   : this._getStatusIcon( true, true ),
+                                    text   : {da:'Márker alle som læst', en:'Mark all as read'},
+                                    onClick: function(){ _this.setAllStatus( true ); }
+                                }]
+                             : null,
                     show  : false
                 });
 
