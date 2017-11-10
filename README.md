@@ -23,6 +23,7 @@ http://FCOO.github.io/jquery-bootstrap-message/demo/
 ### options
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
+| `id` | `string` | `""` | id for the message-group |
 | `url` | `string` | `null` | url to the metadata-file (json) |
 | `header` | `content` | `null` | The header for the list modal-window |
 | `reloadPeriod` | `number` or `string` | `null` | millisecond or [ISO 8601 Duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) with interval for reloading |
@@ -59,6 +60,7 @@ http://FCOO.github.io/jquery-bootstrap-message/demo/
 The meta-data must be in a JSON-file with the following format
 
     {
+        ""id"     : STRING,
         "defaults": {MESSAGEOPTIONS},
         "messages": [
             {MESSAGEOPTIONS},
@@ -67,15 +69,17 @@ The meta-data must be in a JSON-file with the following format
         ]
     }
 
-Where `defaults` are the values used as default and `{MESSAGEOPTIONS}` has the following format
+- `id` (optional) should be a unique id for any JSON-file. Are passed to each message as `urlId`. <br>If no `id` is given in the file the id for the message-group is used instead
+- `defaults` (optional) are the values used as default and `{MESSAGEOPTIONS}` has the following format
 
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
+| `id` | `string` | `""` |  |
 | `type` | `string` | `"info"` | `"info", "help", "warning", "alert", "error"` |
 | `date` | `moment-string` | `now` | The date of the message (UTC) |
-| `publish` | `boolean` or [duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `date` or `moment-string` | `true` | If or when the message is/can be publish |
-| `expire` |`boolean` or [duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `publish` or `moment-string` | `false` | If or when the message expire |
-| `becomeRead` |`boolean` or [duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `publish` or `moment-string` | `""` | If or when a unread message is set to read-status |
+| `publish` | `boolean` or `moment-string` or<br>[duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `date` | `true` | If or when the message is/can be publish |
+| `expire` |`boolean` or `moment-string` or<br> [duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `publish` | `false` | If or when the message expire |
+| `becomeRead` |`boolean` or `moment-string` or<br>[duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) relative to `publish` | `""` | If or when a unread message is set to read-status |
 | `url` | `string` | `""` | Url to markdown-file |
 | `link` | `string` | `""` | Url to standalone version of the markdown-file |
 

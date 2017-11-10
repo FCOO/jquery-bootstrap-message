@@ -13,6 +13,7 @@
 
     function BsMessageGroup( options ) {
 		this.options = $.extend({}, {
+            id            : '',
             url           : '',
             header        : '',
             reloadPeriod  : '', //period-string with interval for reloading
@@ -73,9 +74,10 @@
 	$.BsMessageGroup.prototype = {
         _add: function( options ){
             var _this = this,
-                defaultMessageOptions = options.defaults || {};
+                defaultMessageOptions = options.defaults || {},
+                urlId = options.id || this.options.id || '';
             $.each( options.messages || [], function( index, messageOptions ){
-                _this.list.push( $.bsMessage( $.extend({}, defaultMessageOptions, messageOptions), _this ) );
+                _this.list.push( $.bsMessage( $.extend({urlId: urlId}, defaultMessageOptions, messageOptions), _this ) );
             });
         },
 
