@@ -6,39 +6,39 @@
     },
     "messages": [
         {
-            "id": "6",
+            "id": "2-1",
             "type": "warning",
             "url": "data/browser/da.md",
-            "title": {"da":"Test af Operativsystemer og Browsere", "en":"Test of Operating Systems and Browsers"},
+            "title": {"da":"test2-1 Test af Operativsystemer og Browsere", "en":"Test of Operating Systems and Browsers"},
             "link": "http://ifm.fcoo.dk/browser/"
         },
         {
-            "id": "5",
+            "id": "2-2",
             "type": "help",
             "url": "",
-            "title": {"da":">> >> >> >> >> >> PUBLISH Dette er en meget lang hjælp-besked 5, der handler om alt muligt", "en":">> >> >> >> >> >> >> >> PUBLISH This is a HELP message 5"},
+            "title": {"da":"test2-2 >> >> >> >> >> >> PUBLISH Dette er en meget lang hjælp-besked 5, der handler om alt muligt", "en":">> >> >> >> >> >> >> >> PUBLISH This is a HELP message 5"},
             "date": "2016-11-01",
             "publish": false,
             "expire" : "P2Y"
         },
         {
-            "id": "4",
+            "id": "2-3",
             "type": "warning",
             "url": "",
-            "title": {"da":"Dette er en meget lang warning-besked 4, der handler om alt muligt", "en":"This is a warning message 4"}
+            "title": {"da":"test2-3 Dette er en meget lang warning-besked 4, der handler om alt muligt", "en":"This is a warning message 4"}
         },
         {
-            "id": "3",
+            "id": "2-4",
             "type": "error",
             "url": "",
-            "title": {"da":"Dette er en meget lang error-besked, der handler om alt muligt", "en":"This is a error message"}
+            "title": {"da":"test2-4 Dette er en meget lang error-besked, der handler om alt muligt", "en":"This is a error message"}
         },
         {
-            "id": "2.5",
+            "id": "2-5",
             "date": "2017-01-01",
             "url": "",
             "publish": false,
-            "title": {"da":"IKKE PUBLISERET", "en":"NOT PUBLISHED"}
+            "title": {"da":"test2-5 IKKE PUBLISERET", "en":"NOT PUBLISHED"}
         }
     ]
 

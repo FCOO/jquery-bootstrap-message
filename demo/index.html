@@ -31,7 +31,7 @@
 
 	<script>
         i18next.init();        
-        i18next.changeLanguage('en');
+        i18next.changeLanguage('da');
 
         $.valueFormat.add({ 
             id: 'myDateFormat', 
@@ -50,7 +50,7 @@
 
         var messageGroup = $.bsMessageGroup({
             id            : 'dette_er_id-for_mg',
-            url           : 'data/test.json data/test2.json',
+            url           : 'data/test2.json data/test.json data/test.json data/test.json data/test2.json',
 _reloadPeriod: 'PT20S',
             header        : {icon:'fa-i-blocked', text: {da:'Meddelser', en:'Messages'}},
             showStatus    : true,
@@ -59,8 +59,8 @@ _reloadPeriod: 'PT20S',
             showTypeHeader: true,
             vfFormat      : 'myDateFormat', 
 
-            //sortBy: ['DATE', 'STATUS'],
-            //sortDesc: false,
+            sortBy: 'INDEX',
+            //sortDesc: true,
             loadStatus     : function( message) { return (message.options.index % 2) == 1; },
             onStartLoading : function( messageGroup ){ console.log('Start loading'); },
             onFinishLoading: function( messageGroup ){ console.log('Finish loading'); },

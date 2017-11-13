@@ -72,16 +72,31 @@
 
 	//Extend the prototype
 	$.BsMessageGroup.prototype = {
-        _add: function( options ){
+        _add: function( options, url, urlIndex ){
             var _this = this,
                 defaultMessageOptions = options.defaults || {},
                 urlId = options.id || this.options.id || '';
+
             $.each( options.messages || [], function( index, messageOptions ){
-                _this.list.push( $.bsMessage( $.extend({urlId: urlId}, defaultMessageOptions, messageOptions), _this ) );
+                _this.list.push(
+                    $.bsMessage(
+                        $.extend(
+                            {
+                                index     : index,
+                                totalIndex: urlIndex*10000 + index,
+                                urlIndex  : urlIndex,
+                                urlId     : urlId
+                            },
+                            defaultMessageOptions,
+                            messageOptions
+                        ),
+                   _this )
+                );
             });
         },
 
         load: function(){
+            var _this = this;
             this.isLoading = true;
 
             $.each( this.list, function( index, message ){
@@ -100,9 +115,13 @@
             this.bsTable = null;
             this.options.onStartLoading( this );
             Promise
-                .each(
-                    this.options.url.map( function( url ){ return Promise.getJSON( url ); }),
-                    this._add.bind(this)
+                .all(
+                    this.options.url.map( function( url, index ){
+                        return Promise.getJSON( url )
+                                .then ( function( json ){
+                                    _this._add( json, url, index );
+                                });
+                    })
                 )
                 .finally( this._onLoad.bind(this) );
         },
@@ -225,7 +244,7 @@
 
                 $.each( sortByList, function( index, sortBy ){
                     switch (sortBy){
-                        case 'INDEX' : val1 = mess1.options.index;              val2 = mess2.options.index;             break;
+                        case 'INDEX' : val1 = mess1.options.totalIndex;         val2 = mess2.options.totalIndex;        break;
                         case 'DATE'  : val1 = mess1.options.date.second();      val2 = mess2.options.date.second();     break;
                         case 'STATUS': val1 = mess1.options.status ? 1 : 0;     val2 = mess2.options.status ? 1 : 0;    break;
                         case 'TYPE'  : val1 = typeToVal[mess1.options.type];    val2 = typeToVal[mess2.options.type];   break;

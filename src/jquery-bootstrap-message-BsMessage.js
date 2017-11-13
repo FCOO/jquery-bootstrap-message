@@ -50,10 +50,8 @@
 
         this.parent = parent;
         this.options.date = moment( this.options.date );
-        this.options.index = this.parent.list.length;
         this.options.id = this.options.id || 'index_' + this.options.index;
         this.options.status = this.parent.options.loadStatus( this );
-
 
         /*
         Find the publishMoment = the moment where the message is published

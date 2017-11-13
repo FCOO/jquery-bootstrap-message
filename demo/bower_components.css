@@ -11106,7 +11106,8 @@ for noty is copyed and modified
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5); }
     .noty_bar.noty_theme__jquery-bootstrap .noty_body {
       padding: 0.5rem 0.5rem;
-      font-size: 1rem; }
+      font-size: 1rem;
+      font-size: 0.875rem; }
     .noty_bar.noty_theme__jquery-bootstrap .header-icon-container {
       position: fixed;
       top: 0;
@@ -11116,6 +11117,11 @@ for noty is copyed and modified
       .noty_bar.noty_theme__jquery-bootstrap .header-icon-container.header-icon-container-sm {
         margin-top: 0.25rem;
         margin-right: 0.25rem; }
+  .noty_bar hr {
+    padding: 0;
+    margin: 0.5rem 0; }
+  .noty_bar .noty_footer {
+    font-size: 0.75rem; }
 
 .noty_theme__jquery-bootstrap.noty_type__alert {
   background-color: #fefefe;

@@ -10255,7 +10255,7 @@ return jQuery;
 ;
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.12.6
+ * @version 1.12.7
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -10831,7 +10831,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
     // Handle other cases based on DOM element used as boundaries
     var boundariesNode = void 0;
     if (boundariesElement === 'scrollParent') {
-      boundariesNode = getScrollParent(getParentNode(popper));
+      boundariesNode = getScrollParent(getParentNode(reference));
       if (boundariesNode.nodeName === 'BODY') {
         boundariesNode = popper.ownerDocument.documentElement;
       }
@@ -28727,6 +28727,16 @@ TODO:
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
 
+            //Add footer (if any)
+            if (options.footer){
+                $body.append( $('<hr/>') );
+                $('<div/>')
+                    .addClass('noty_footer')
+                    .addClass('text-' + (options.footer.textAlign || 'left'))
+                    ._bsAddHtml( options.footer )
+                    .appendTo($body);
+            }
+
             $body.addClass('text-'+options.textAlign);
 
             if (closeWith.includes('button'))
@@ -36191,7 +36201,7 @@ module.exports = ret;
 
 
 ;
-;/*! showdown v 1.8.1 - 01-11-2017 */
+;/*! showdown v 1.8.2 - 11-11-2017 */
 (function(){
 /**
  * Created by Tivie on 13-07-2015.
@@ -38791,7 +38801,9 @@ showdown.subParser('anchors', function (text, options, globals) {
       result += ' title="' + title + '"';
     }
 
-    if (options.openLinksInNewWindow) {
+    // optionLinksInNewWindow only applies
+    // to external links. Hash links (#) open in same page
+    if (options.openLinksInNewWindow && !/^#/.test(url)) {
       // escaped _
       result += ' target="¨E95Eblank"';
     }
@@ -39269,7 +39281,7 @@ showdown.subParser('githubCodeBlocks', function (text, options, globals) {
 
   text += '¨0';
 
-  text = text.replace(/(?:^|\n)```(.*)\n([\s\S]*?)\n```/g, function (wholeMatch, language, codeblock) {
+  text = text.replace(/(?:^|\n)(```+|~~~+)([^\s`~]*)\n([\s\S]*?)\n\1/g, function (wholeMatch, delim, language, codeblock) {
     var end = (options.omitExtraWLInCodeBlocks) ? '' : '\n';
 
     // First parse the github code block
@@ -40784,7 +40796,7 @@ if (typeof define === 'function' && define.amd) {
 
 ;
 //! moment.js
-//! version : 2.19.1
+//! version : 2.19.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -41599,7 +41611,7 @@ function get (mom, unit) {
 
 function set$1 (mom, unit, value) {
     if (mom.isValid() && !isNaN(value)) {
-        if (unit === 'FullYear' && isLeapYear(mom.year())) {
+        if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
             mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
         }
         else {
@@ -42705,10 +42717,11 @@ function defineLocale (name, config) {
 
 function updateLocale(name, config) {
     if (config != null) {
-        var locale, parentConfig = baseConfig;
+        var locale, tmpLocale, parentConfig = baseConfig;
         // MERGE
-        if (locales[name] != null) {
-            parentConfig = locales[name]._config;
+        tmpLocale = loadLocale(name);
+        if (tmpLocale != null) {
+            parentConfig = tmpLocale._config;
         }
         config = mergeConfigs(parentConfig, config);
         locale = new Locale(config);
@@ -45262,7 +45275,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.19.1';
+hooks.version = '2.19.2';
 
 setHookCallback(createLocal);
 
