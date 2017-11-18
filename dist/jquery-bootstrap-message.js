@@ -499,7 +499,7 @@
                     align: 'center',
                     verticalAlign: 'top',
                     width: '1.2rem',
-                    noHorizontalPadding: true
+                    //noHorizontalPadding: true
                 });
 
             if (this.options.showType)
@@ -509,7 +509,7 @@
                     align: 'center',
                     verticalAlign: 'top',
                     width: '1.2rem',
-                    noHorizontalPadding: true
+                    //noHorizontalPadding: true
             });
 
             if (this.options.vfFormat && this.options.dateInColumn)
