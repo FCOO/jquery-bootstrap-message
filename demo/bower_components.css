@@ -10439,8 +10439,10 @@ body.modal-open .modal {
   @media (max-height: 575px) {
     .modal .modal-dialog {
       justify-content: flex-start; } }
-  html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex {
+  .modal .modal-dialog.modal-flex {
     width: 31.25rem; }
+    .modal .modal-dialog.modal-flex.extra-width {
+      width: 50rem; }
   .modal .modal-dialog .modal-content {
     min-height: 100%; }
   .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {

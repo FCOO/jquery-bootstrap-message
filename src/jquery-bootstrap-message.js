@@ -274,7 +274,7 @@
                     verticalBorder: false,
                     selectable    : true,
                     allowReselect : true,
-                    small         : true,
+                    //small         : true,
                     onChange      : function( id ){
                         _this._getMessageById( id.slice(1) ).asBsModal( true );
                     },
@@ -303,7 +303,7 @@
                     noHorizontalPadding: true
             });
 
-            if (this.options.vfFormat)
+            if (this.options.vfFormat && this.options.dateInColumn)
                 options.columns.push({
                     id: 'date',
                     header: '',

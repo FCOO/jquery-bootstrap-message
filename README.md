@@ -41,8 +41,10 @@ http://FCOO.github.io/jquery-bootstrap-message/demo/
 | `showStatus`   | `boolean` | `false` | If true the status of the messages are shown |
 | `showTypeHeader` | `boolean` | `false` | If true the modal-header of no-file messages are set to type-icon + type-name |
 | `showTypeColor` | `boolean` | `false` | If true the modal background-color and color of no-file messages get set by the type |
-| `vfFormat` | `string` | `""` | Format-id for the date using [jquery-value-format](https://github.com/FCOO/jquery-value-format). The format must be defined in the application. If `vfFormat == ""` the date-column isn't shown |
+| `vfFormat` | `string` | `""` | Format-id for the date using [jquery-value-format](https://github.com/FCOO/jquery-value-format). The format must be defined in the application. If `vfFormat == ""` the date isn't shown |
 | `vfOptions` | `object` | `null` | Optional options for the format vfFormat when displaying the date using [jquery-value-format](https://github.com/FCOO/jquery-value-format) |
+| `dateInColumn` | `boolean` | `false` | If true and `vfFormat` is given the date gets it own column in the list |
+| `extraWidth` | `boolean` | `false` | See options for [jquery-bootstrap](https://github.com/FCOO/jquery-bootstrap) |
 | `loading` | `content` | See source | Default icon and text displayed in the modal-window during loading |
 
 ### Methods

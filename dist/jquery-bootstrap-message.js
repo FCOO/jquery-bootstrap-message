@@ -109,7 +109,21 @@
 
         //_asBsTableContent - return the options adjusted to be shown in a table
         _asBsTableContent: function(){
-            var title = [{text: this.options.title}];
+            var title = [];
+            if (this.parent.options.vfFormat && !this.parent.options.dateInColumn)
+                title.push(
+                    {
+                        vfFormat : this.parent.options.vfFormat,
+                        vfOptions: this.parent.options.vfOptions,
+                        vfValue  : this.options.date,
+                        textClass: 'small'
+                    },
+                    '<br>'
+                );
+
+            title.push( {text: this.options.title} );
+
+
             if (this.options.url)
                 title.push(
                     {text:'...'},
@@ -146,9 +160,10 @@
                     this.bsMarkdown || $.bsMarkdown({
                         url : this.options.url,
                         link: this.options.link,
+                        extraWidth: this.parent.options.extraWidth,
 
-                        languages: this.parent.options.languages,
-                        language : this.parent.options.language,
+                        languages : this.parent.options.languages,
+                        language  : this.parent.options.language,
 
                         header : {
                             icon : this.parent.options.showType ? $.bsNotyIcon[this.options.type] : '',
@@ -468,7 +483,7 @@
                     verticalBorder: false,
                     selectable    : true,
                     allowReselect : true,
-                    small         : true,
+                    //small         : true,
                     onChange      : function( id ){
                         _this._getMessageById( id.slice(1) ).asBsModal( true );
                     },
@@ -497,7 +512,7 @@
                     noHorizontalPadding: true
             });
 
-            if (this.options.vfFormat)
+            if (this.options.vfFormat && this.options.dateInColumn)
                 options.columns.push({
                     id: 'date',
                     header: '',
