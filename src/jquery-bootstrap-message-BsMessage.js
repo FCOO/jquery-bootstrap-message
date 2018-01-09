@@ -13,19 +13,22 @@
 
     function periodOrMomentToBoolean(value, checkForIsAfter, refMoment, invalidReturnValue ){
         //value = moment-string or period-string
-        var valueMoment;
+        var valueMoment,
+            //Check if value is a period
+            duration   = moment.duration(value),
+            isDuration = moment.isDuration(duration);
+
         refMoment = refMoment || moment();
         invalidReturnValue = invalidReturnValue || false;
 
-        //First check if value is a moment
-        valueMoment = moment.isMoment(value) ? value : moment( value );
-        if (!valueMoment.isValid()){
-            //Check if value is a period
-            var duration = moment.duration(value);
 
-            if (moment.isDuration(duration))
-                valueMoment = refMoment.clone().add(duration);
-            else
+        if (isDuration){
+            valueMoment = refMoment.clone().add(duration);
+        }
+        else {
+            //Check if value is a moment-obj or a valid input
+            valueMoment = moment.isMoment(value) ? value : moment( value );
+            if (!valueMoment.isValid())
                 return invalidReturnValue;
         }
 
