@@ -3550,7 +3550,7 @@ COLOR AND OPACITY
 
 @charset "UTF-8";
 /***********************************************
-	jquery-bootstrap.scss, 
+	jquery-bootstrap.scss,
 
 	(c) 2017, FCOO
 
@@ -9342,8 +9342,8 @@ VARIABLES
 ************************************************************/
 /***********************************************
 DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass 
-in src/jquery-bootstrap-button.js 
+$btn-style-name MUST correspond with ns.bsButtonClass
+in src/jquery-bootstrap-button.js
 ************************************************/
 /************************************************************
 Variables bassed on bootstrop variables
@@ -10436,9 +10436,6 @@ body.modal-open .modal {
   width: 18.75rem;
   opacity: 0;
   transition: opacity 0.3s linear; }
-  @media (max-height: 575px) {
-    .modal .modal-dialog {
-      justify-content: flex-start; } }
   .modal .modal-dialog.modal-flex {
     width: 31.25rem; }
     .modal .modal-dialog.modal-flex.extra-width {
