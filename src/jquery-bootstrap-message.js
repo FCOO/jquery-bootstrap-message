@@ -225,7 +225,7 @@
         /**********************************************
         Sorting
         **********************************************/
-        sort( sortBy, sortDesc ){
+        sort: function( sortBy, sortDesc ){
             this.options.sortBy = sortBy || this.options.sortBy;
             if ($.type(sortDesc) == 'boolean')
                 this.options.sortDesc = sortDesc;

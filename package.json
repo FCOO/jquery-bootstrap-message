@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-message",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "homepage": "https://github.com/FCOO/jquery-bootstrap-message",
   "author": "Niels Holt nho@fcoo.dk",
   "description": "package.json is only use for building the package. see bower.json for more info",
@@ -9,9 +9,8 @@
     "url": "git://github.com/FCOO/jquery-bootstrap-message.git"
   },
   "dependencies": {
-    "bluebird-retry": "https://github.com/demmer/bluebird-retry",
-    "grunt": "^0.4.0",
-    "grunt-fcoo-grunt-plugin": "^2.0.0"
+    "grunt": "^1.0.0",
+    "grunt-fcoo-grunt-plugin": "^3.2.0"
   },
   "license": "MIT"
 }
