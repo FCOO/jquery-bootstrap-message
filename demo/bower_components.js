@@ -20006,15 +20006,14 @@ var Translator = function (_EventEmitter) {
     };
   };
 
-  Translator.prototype.translate = function translate(keys) {
+  Translator.prototype.translate = function translate(keys, options) {
     var _this2 = this;
 
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') {
+    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object' && this.options.overloadTranslationOptionHandler) {
       /* eslint prefer-rest-params: 0 */
       options = this.options.overloadTranslationOptionHandler(arguments);
     }
+    if (!options) options = {};
 
     // non valid keys handling
     if (keys === undefined || keys === null || keys === '') return '';
@@ -20047,7 +20046,7 @@ var Translator = function (_EventEmitter) {
     // resolve from store
     var resolved = this.resolve(keys, options);
     var res = resolved && resolved.res;
-    var usedKey = resolved && resolved.usedKey || key;
+    var resUsedKey = resolved && resolved.usedKey || key;
 
     var resType = Object.prototype.toString.apply(res);
     var noObject = ['[object Number]', '[object Function]', '[object RegExp]'];
@@ -20058,7 +20057,7 @@ var Translator = function (_EventEmitter) {
     if (res && handleAsObject && noObject.indexOf(resType) < 0 && !(joinArrays && resType === '[object Array]')) {
       if (!options.returnObjects && !this.options.returnObjects) {
         this.logger.warn('accessing an object - but returnObjects options is not enabled!');
-        return this.options.returnedObjectHandler ? this.options.returnedObjectHandler(usedKey, res, options) : 'key \'' + key + ' (' + this.language + ')\' returned an object instead of string.';
+        return this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, res, options) : 'key \'' + key + ' (' + this.language + ')\' returned an object instead of string.';
       }
 
       // if we got a separator we loop over children - else we just return object as is
@@ -20069,7 +20068,9 @@ var Translator = function (_EventEmitter) {
         /* eslint no-restricted-syntax: 0 */
         for (var m in res) {
           if (Object.prototype.hasOwnProperty.call(res, m)) {
-            copy$$1[m] = this.translate('' + usedKey + keySeparator + m, _extends({}, options, { joinArrays: false, ns: namespaces }));
+            var deepKey = '' + resUsedKey + keySeparator + m;
+            copy$$1[m] = this.translate(deepKey, _extends({}, options, { joinArrays: false, ns: namespaces }));
+            if (copy$$1[m] === deepKey) copy$$1[m] = res[m]; // if nothing found use orginal value as fallback
           }
         }
         res = copy$$1;
@@ -20081,7 +20082,7 @@ var Translator = function (_EventEmitter) {
     } else {
       // string, empty or null
       var usedDefault = false;
-      var _usedKey = false;
+      var usedKey = false;
 
       // fallback value
       if (!this.isValidLookup(res) && options.defaultValue !== undefined) {
@@ -20089,13 +20090,13 @@ var Translator = function (_EventEmitter) {
         res = options.defaultValue;
       }
       if (!this.isValidLookup(res)) {
-        _usedKey = true;
+        usedKey = true;
         res = key;
       }
 
       // save missing
       var updateMissing = options.defaultValue && options.defaultValue !== res && this.options.updateMissing;
-      if (_usedKey || usedDefault || updateMissing) {
+      if (usedKey || usedDefault || updateMissing) {
         this.logger.log(updateMissing ? 'updateKey' : 'missingKey', lng, namespace, key, updateMissing ? options.defaultValue : res);
 
         var lngs = [];
@@ -20112,9 +20113,9 @@ var Translator = function (_EventEmitter) {
 
         var send = function send(l, k) {
           if (_this2.options.missingKeyHandler) {
-            _this2.options.missingKeyHandler(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing);
+            _this2.options.missingKeyHandler(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing, options);
           } else if (_this2.backendConnector && _this2.backendConnector.saveMissing) {
-            _this2.backendConnector.saveMissing(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing);
+            _this2.backendConnector.saveMissing(l, namespace, k, updateMissing ? options.defaultValue : res, updateMissing, options);
           }
           _this2.emit('missingKey', l, namespace, k, res);
         };
@@ -20138,10 +20139,10 @@ var Translator = function (_EventEmitter) {
       res = this.extendTranslation(res, keys, options);
 
       // append namespace if still key
-      if (_usedKey && res === key && this.options.appendNamespaceToMissingKey) res = namespace + ':' + key;
+      if (usedKey && res === key && this.options.appendNamespaceToMissingKey) res = namespace + ':' + key;
 
       // parseMissingKeyHandler
-      if (_usedKey && this.options.parseMissingKeyHandler) res = this.options.parseMissingKeyHandler(res);
+      if (usedKey && this.options.parseMissingKeyHandler) res = this.options.parseMissingKeyHandler(res);
     }
 
     // return
@@ -20169,7 +20170,7 @@ var Translator = function (_EventEmitter) {
     var postProcess = options.postProcess || this.options.postProcess;
     var postProcessorNames = typeof postProcess === 'string' ? [postProcess] : postProcess;
 
-    if (res !== undefined && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
+    if (res !== undefined && res !== null && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
       res = postProcessor.handle(postProcessorNames, res, key, options, this);
     }
 
@@ -20967,7 +20968,11 @@ var Connector = function (_EventEmitter) {
   };
 
   Connector.prototype.saveMissing = function saveMissing(languages, namespace, key, fallbackValue, isUpdate) {
-    if (this.backend && this.backend.create) this.backend.create(languages, namespace, key, fallbackValue, null /* unused callback */, { isUpdate: isUpdate });
+    var options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
+
+    if (this.backend && this.backend.create) {
+      this.backend.create(languages, namespace, key, fallbackValue, null /* unused callback */, _extends({}, options, { isUpdate: isUpdate }));
+    }
 
     // write to store to avoid resending
     if (!languages || !languages[0]) return;
@@ -21076,7 +21081,10 @@ function get$1() {
     appendNamespaceToMissingKey: false,
     appendNamespaceToCIMode: false,
     overloadTranslationOptionHandler: function handle(args) {
-      return { defaultValue: args[1] };
+      var ret = {};
+      if (args[1]) ret.defaultValue = args[1];
+      if (args[2]) ret.tDescription = args[2];
+      return ret;
     },
 
     interpolation: {
@@ -28256,15 +28264,17 @@ TODO:
 	"use strict";
 
     var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+        zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
         $modalBackdrop = null;
 
     /******************************************************
     $.fn._setModalBackdropZIndex
     Set the z-index of this to the current level
+    If delta === true the z-index is set to zindexAllwaysOnTop (9999)
     ******************************************************/
     $.fn._setModalBackdropZIndex = function( delta ){
-        this.css('z-index', zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+        this.css('z-index', delta === true  ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
         return this;
     };
 
@@ -28353,7 +28363,7 @@ TODO:
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-
+window._currentBsModal = null;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -28391,10 +28401,19 @@ TODO:
         $._addModalBackdropLevel();
 
         //Add layer for noty on the modal
-        $._bsNotyAddLayer( true );
+        $._bsNotyAddLayer();
 
         //Move the modal to the front
         $this._setModalBackdropZIndex();
+
+        //Prevent the modal from closing with esc if there are a modal noty
+        $(this).keydown( function( event ){
+            if (window._bsNotyModal){
+                window._bsNotyModal.close();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        });
 
     }
 
@@ -28587,8 +28606,8 @@ TODO:
         //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
-                text        : options.closeText,
-                icon        : options.closeIcon,
+                text: options.closeText,
+                icon: options.closeIcon,
 
                 closeOnClick: true,
                 addOnClick  : false
@@ -28763,7 +28782,7 @@ TODO:
 
 ****************************************************************************/
 
-(function ($, Noty, window/*, document, undefined*/) {
+(function ($, Noty, window, document/*, undefined*/) {
 	"use strict";
 
 
@@ -28771,31 +28790,50 @@ TODO:
     To be able to have Noty on top of modal-windows the notys are
     placed in different containers with increasing and decreasing
     z-index.
-    A new container is added when a modal-window or modal noty is open
+    A new container is added when a modal-window or modal-noty is open
     All noty in the top container is closed when the modal-window or
     modal noty is closed. E.q. all noty opened on top of a modal-window is automatic
     closed when the modal-window is closed
+    If options.onTop: true the noty is placed in a container that is allways on the top of other elements
     ******************************************************/
-    var bsNotyLayerList = [];
-    var $bsNotyLayer = null;
 
-    function notyQueueName(){
-        return 'bsNotyQueue'+ bsNotyLayerList.length;
+    var bsNotyLayerList   = [],
+        $bsNotyLayer      = null,
+        $bsNotyLayerOnTop = null;
+
+    //Global pointer to current modal noty (if any)
+    window._bsNotyModal = null;
+
+    //Add global event-function to close modal-noty by pressing esc
+    $(document).keydown( function( event ){
+        if (window._bsNotyModal && (event.which == 27))
+            window._bsNotyModal.close();
+    });
+
+
+    function notyQueueName(isOnTopLayer){
+        return 'bsNotyQueue'+ (isOnTopLayer ? 'ONTOP' : bsNotyLayerList.length);
     }
 
     //$._bsNotyAddLayer: add a new container for noty-containers
-    $._bsNotyAddLayer = function(){
+    $._bsNotyAddLayer = function( isOnTopLayer ){
 
-        $bsNotyLayer =
+        var $result =
             $('<div/>')
                 .addClass('noty-layer')
                 .appendTo( $('body') );
 
-        bsNotyLayerList.push( $bsNotyLayer );
+        if (!isOnTopLayer)
+            bsNotyLayerList.push( $result );
 
-        $bsNotyLayer
-            .attr('id', notyQueueName())
-            ._setModalBackdropZIndex();
+        $result
+            .attr('id', notyQueueName( isOnTopLayer ))
+            ._setModalBackdropZIndex( isOnTopLayer );
+
+        if (isOnTopLayer)
+            $bsNotyLayerOnTop = $result;
+        else
+            $bsNotyLayer = $result;
     };
 
 
@@ -28815,6 +28853,24 @@ TODO:
 
 
     /******************************************************
+    Extend Noty with flash
+    Turn flashing on for 3s
+    ******************************************************/
+    Noty.prototype.flash  = function(){
+        var $barDom = $(this.barDom);
+        if ($barDom.hasClass('flash')){
+            //Restart thr animation
+            //Thank to https://css-tricks.com/restart-css-animation/
+            $barDom.removeClass('flash');
+            void $barDom.find('.noty_body').get(0).offsetWidth;
+            $barDom.addClass('flash');
+        }
+        else
+            $barDom.addClass('flash');
+        return this;
+    };
+
+    /******************************************************
     Setting default options for Noty
     ******************************************************/
     Noty.overrideDefaults({
@@ -28827,6 +28883,7 @@ TODO:
         type     : 'info',
         closeWith: ['click'],
         textAlign: 'left',
+        onTop    : false,
         show     : true,
     };
 
@@ -28875,9 +28932,21 @@ TODO:
             close: 'animated ' + animateClose
         };
 
+        //Save buttons and remove if from options to prevent default buttons
+        var buttons = options.buttons;
+        options.buttons = null;
+
         //Save closeWith and remove 'button' to prevent default close-button
-        var closeWith = options.closeWith;
-        options.closeWith = closeWith.includes('click') ? ['click'] : [];
+        var closeWith = options.closeWith,
+            closeWithButton = closeWith.indexOf('button') >= 0,
+            closeWithClick = closeWith.indexOf('click') >= 0;
+
+        //Adjust closeWith
+        if (options.buttons)
+            closeWithClick = false;
+
+        options.closeWith = closeWithClick ? ['click'] : [];
+
 
         //Save show and create the noty hidden
         var show = options.show;
@@ -28894,6 +28963,9 @@ TODO:
 
             options.header = options.header || {};
 
+            if ($.type( options.header ) == "string")
+                options.header = {text: options.header };
+
             var headerOptions =
                 options.defaultHeader ?
                 $.extend({},
@@ -28902,13 +28974,6 @@ TODO:
                         text: $.bsNotyName[options.type]
                     }, options.header || {})
                 : options.header || {};
-
-            options.content.unshift('<br>');
-            options.content.unshift({
-                icon     : headerOptions.icon,
-                textClass: 'text-capitalize font-weight-bold',
-                text     : headerOptions.text
-            });
         }
 
         //Force no progressBar
@@ -28924,22 +28989,55 @@ TODO:
                 $barDom = $(this.barDom),
                 $body = $barDom.find('.noty_body');
 
+            //Insert header before $body (if any)
+            //Use small header unless it is touch-mode and close with button (round x)
+            if (headerOptions)
+                $('<div/>')
+                    ._bsAddBaseClassAndSize( {
+                        baseClass   :'noty-header',
+                        useTouchSize: closeWithButton,
+                        small       : !closeWithButton
+                    })
+                    ._bsAddHtml( headerOptions )
+                    .insertBefore( $body );
+
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
+            $body.addClass('text-'+options.textAlign);
+
+            var closeFunc = function( event ){
+                                event.stopPropagation();
+                                _this.close();
+                            };
+
+            //Add buttons (if any)
+            if (buttons){
+                var $buttonContainer =
+                        $('<div/>')
+                            .addClass('noty-buttons modal-footer')  //modal-footer from Bootstrap also used in modal-windows for button-container
+                            .insertAfter($body),
+                    defaultButtonOptions = {
+                        closeOnClick: true
+                    };
+
+                $.each( buttons, function( index, buttonOptions ){
+                    buttonOptions = $.extend(true, defaultButtonOptions, buttonOptions );
+                    var $button = $.bsButton(buttonOptions).appendTo($buttonContainer);
+                    if (buttonOptions.closeOnClick)
+                        $button.on('click', closeFunc );
+                });
+            }
 
             //Add footer (if any)
             if (options.footer){
-                $body.append( $('<hr/>') );
                 $('<div/>')
-                    .addClass('noty_footer')
+                    .addClass('noty-footer')
                     .addClass('text-' + (options.footer.textAlign || 'left'))
                     ._bsAddHtml( options.footer )
-                    .appendTo($body);
+                    .insertAfter($body);
             }
 
-            $body.addClass('text-'+options.textAlign);
-
-            if (closeWith.includes('button'))
+            if (closeWithButton)
                 //Add same close-icon as for modal-windows
                 $('<div/>')
                     ._bsAddBaseClassAndSize( {
@@ -28950,41 +29048,66 @@ TODO:
                     .append(
                         $('<i/>')
                             .addClass("header-icon header-icon-close")
-                            .on('click', function( event ){
-                                event.stopPropagation();
-                                _this.close();
-                            })
+                            .on('click', closeFunc )
                     );
         };
 
+
+        var $bsNotyLayerToUse; //The noty-layer to contain the noty
 
         //If it is a modal noty => add/move up backdrop
         if (options.modal)
             $._addModalBackdropLevel();
 
         //Find or create layer and container for the noty
-        if (!$bsNotyLayer || options.modal){
-            $._bsNotyAddLayer();
+        if (options.onTop){
+
+            if (!$bsNotyLayerOnTop)
+                $._bsNotyAddLayer(true);
+            $bsNotyLayerToUse = $bsNotyLayerOnTop;
         }
+        else {
+            if (!$bsNotyLayer || options.modal)
+                $._bsNotyAddLayer();
+            $bsNotyLayerToUse = $bsNotyLayer;
+        }
+
         var classNames = '.noty-container.noty-container-'+options.layout,
-            $container = $bsNotyLayer.find(classNames);
+            $container = $bsNotyLayerToUse.find(classNames);
         if (!$container.length){
             $container =
                 $('<div/>')
                     .addClass( classNames.split('.').join(' ') )
-                    .appendTo( $bsNotyLayer );
+                    .appendTo( $bsNotyLayerToUse );
         }
 
-        options.container = '#' + notyQueueName() + ' ' + classNames;
+        options.container = '#' + notyQueueName(options.onTop) + ' ' + classNames;
 
         var result = new Noty( options );
 
+        //If options.flash => flash on show
+        if (options.flash)
+            result.on('onShow', result.flash, result );
+
+
         //If it is a modal noty => remove/move down backdrop when closed
-        if (options.modal)
+        if (options.modal){
             result.on('afterClose', $._bsNotyRemoveLayer);
+
+            result.on('onShow', function(){
+                this.prevBsNotyModal = window._bsNotyModal;
+                window._bsNotyModal = this;
+            });
+            result.on('afterClose', function(){
+                window._bsNotyModal = this.prevBsNotyModal;
+            });
+
+    }
+
 
         if (show)
             result.show();
+
         return result;
     };
 
@@ -29053,7 +29176,7 @@ TODO:
         options.force = options.force || (options.timeout);
 
         //defaultHaeder
-        options.defaultHeader = !options.header && (options.defaultHeader /*|| options.buttons*/ || ((options.type == 'error') && (options.defaultHeader !== false)));
+        options.defaultHeader = !options.header && (options.defaultHeader || ((options.type == 'error') && (options.defaultHeader !== false)));
 
         //text-align: center if no header
         options.textAlign = options.textAlign || (options.header || options.defaultHeader ? 'left' : 'center');
@@ -29111,9 +29234,8 @@ TODO:
     *******************************************************************************/
     window.noty = function( options ){
         return $.bsNoty($.extend({}, {
-            defaultHeader: true,
-            content      : options.text || options.content,
-            show         : true
+            content: options.text || options.content,
+            show   : true
         }, options));
     };
 
@@ -30043,11 +30165,9 @@ Add sort-functions + save col-index for sorted column
 
             var _this = this;
 
-            //options = array => add each with space between
+            //options = array => add each
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
-                    if (index)
-                        _this.append('&nbsp;');
                     _this._bsAddHtml( textOptions );
                 });
                 return this;
@@ -30057,6 +30177,11 @@ Add sort-functions + save col-index for sorted column
             if ($.type( options ) != "object")
                 return this._bsAddHtml( {text: options} );
 
+            //If the options is a jQuery-object: append it and return
+            if (options.jquery){
+                this.append( options );
+                return this;
+            }
 
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),
@@ -36248,21 +36373,27 @@ module.exports = ret;
         result.message = reason.message || '';
         result.url     = response.url || '';
         result.status  = response.status || '';
-//TODO            error.responseText = ???
         return result;
     };
 
     //Create a default error-handle. Can be overwritten
-    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* reason */ ){};
+    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* reason, url */ ){};
 
     //Set event handler for unhandled rejections
     window.onunhandledrejection = function(e){
         if (e && e.preventDefault)
             e.preventDefault();
 
-        if (e && e.detail)
+        if (e && e.detail){
+            var reason = e.detail.reason || {},
+                promise = e.detail.promise,
+                promiseOptions = promise.promiseOptions || {},
+                response = reason.response || {},
+                url = response.url || promiseOptions.url || '';
+
             //Call default error handler
-            Promise.defaultErrorHandler( e.detail.reason || {} );
+            Promise.defaultErrorHandler( reason, url );
+        }
     };
 
     /**************************************************************
@@ -36346,7 +36477,7 @@ module.exports = ret;
 
         if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
             var error = new Error("Invalid XML");
-            error.response = response;
+            //error.response = response;
             throw error;
         }
         return xml;
@@ -36356,6 +36487,7 @@ module.exports = ret;
     Promise.get = function(url, options, resolve, reject, fin) {
         options = $.extend({}, {
             //Default options
+            url: url,
             useDefaultErrorHandler: true,
             retries               : 0
         }, options || {} );
@@ -36402,7 +36534,7 @@ module.exports = ret;
         if (reject){
             //If options.useDefaultErrorHandler => also needs to call => Promise.defaultErrorHandler
             if (options.useDefaultErrorHandler)
-                result = result.catch( function(){
+                result = result.catch( function( /*reason, url */ ){
                     reject.apply( null, arguments );
                     return Promise.defaultErrorHandler.apply( null, arguments );
                 });
@@ -36422,7 +36554,7 @@ module.exports = ret;
         if (fin)
             result = result.finally( fin );
 
-
+        result.promiseOptions = options;
         return result;
     };
 

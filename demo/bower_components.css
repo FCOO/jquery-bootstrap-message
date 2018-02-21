@@ -9769,7 +9769,7 @@ Unifies padding for modal, accordion, popup etc.
 ************************************************************/
 /************************************************************
 CONTROL-CONTAINER
-Style for div with controls inside modal. 
+Style for div with controls inside modal.
 Must have tabindex:"-1" to work with focus
 ************************************************************/
 /************************************************************
@@ -9855,10 +9855,14 @@ To avoid forced shadow and to control color a own button-mixin is defined
 To be able to control font-family etc. 'buttons'
 can be created as <div>
 cursor-style added to prevent text-cursor on buttons
+Also overwrite default bootstrap behaviour
 ************************************************************/
 a.btn, a.list-group-item,
 div.btn, div.list-group-item {
   cursor: default; }
+
+.btn:not(:disabled):not(.disabled) {
+  cursor: default !important; }
 
 .btn.btn-standard {
   background-color: #f8f9fa;
@@ -9874,7 +9878,7 @@ div.btn, div.list-group-item {
     Special version to have square buttons (with only icon)
     ************************************************************/
   /************************************************************
-    Special version to have extra large icon 
+    Special version to have extra large icon
     ************************************************************/ }
   .btn.btn-standard.disabled, .btn.btn-standard:disabled {
     background-color: #f8f9fa; }
@@ -9912,7 +9916,7 @@ div.btn, div.list-group-item {
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -9925,7 +9929,7 @@ div.btn, div.list-group-item {
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -9935,7 +9939,7 @@ div.btn, div.list-group-item {
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -9952,7 +9956,7 @@ div.btn, div.list-group-item {
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10044,7 +10048,7 @@ LIST-GROUP and LIST-GROUP-ITEM
   /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10057,7 +10061,7 @@ LIST-GROUP and LIST-GROUP-ITEM
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10068,7 +10072,7 @@ LIST-GROUP and LIST-GROUP-ITEM
   /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10614,7 +10618,7 @@ Two versions:
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10707,7 +10711,7 @@ Two versions:
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10720,7 +10724,7 @@ Two versions:
         /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10730,7 +10734,7 @@ Two versions:
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -10778,7 +10782,7 @@ Two versions:
 /************************************************************
 MODAL
 
-Adjusting size etc. to have modal in normal and small size 
+Adjusting size etc. to have modal in normal and small size
 and jusing standard header, buttons and sizes
 
 If the height (and width) of the content is variable (eq. accordion) the class
@@ -11105,7 +11109,7 @@ Adjustmernt to Bootstrap table
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11122,7 +11126,7 @@ Adjustmernt to Bootstrap table
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11141,7 +11145,7 @@ Adjustmernt to Bootstrap table
         /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11166,7 +11170,7 @@ Adjustmernt to Bootstrap table
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11179,7 +11183,7 @@ Adjustmernt to Bootstrap table
         /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11189,7 +11193,7 @@ Adjustmernt to Bootstrap table
       /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11254,7 +11258,7 @@ Using Bootstrap Collapse to create accordion
   /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11277,7 +11281,7 @@ Using Bootstrap Collapse to create accordion
     /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
@@ -11473,6 +11477,8 @@ for noty is copyed and modified
       padding: 0.5rem 0.5rem;
       font-size: 1rem;
       font-size: 0.875rem; }
+      .noty_bar.noty_theme__jquery-bootstrap .noty_body * {
+        word-wrap: break-word; }
     .noty_bar.noty_theme__jquery-bootstrap .header-icon-container {
       position: fixed;
       top: 0;
@@ -11482,11 +11488,78 @@ for noty is copyed and modified
       .noty_bar.noty_theme__jquery-bootstrap .header-icon-container.header-icon-container-sm {
         margin-top: 0.25rem;
         margin-right: 0.25rem; }
+  .noty_bar .noty-header {
+    color: #495057;
+    background-color: #f2f2f2;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: inherit;
+    border-bottom: 1px solid #9aa1a8;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0; }
+    .noty_bar .noty-header span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .noty_bar .noty-header.noty-header-sm {
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      padding: 0.25rem 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      border-radius: inherit;
+      border-bottom: 1px solid #9aa1a8;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0; }
+      .noty_bar .noty-header.noty-header-sm span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+  .noty_bar.noty_close_with_click:hover .noty-header {
+    background-color: #e5e5e5; }
   .noty_bar hr {
     padding: 0;
     margin: 0.5rem 0; }
-  .noty_bar .noty_footer {
-    font-size: 0.75rem; }
+  .noty_bar .noty-footer {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: inherit;
+    color: #495057;
+    background-color: #f2f2f2;
+    line-height: 1;
+    border-top: 1px solid #9aa1a8;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important; }
+    .noty_bar .noty-footer span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .noty_bar .noty-footer:empty {
+      display: none; }
+  .noty_bar .noty-buttons {
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+    background-color: #fff;
+    text-align: right; }
+  .noty_bar .noty-footer + .noty-buttons {
+    border-top: none; }
+
+@keyframes noty_keyframes__alert {
+  from, 50%, to {
+    background-color: #fefefe;
+    color: #818182; }
+  25%, 75% {
+    background-color: #cbcbcb;
+    color: #4e4e4f; } }
 
 .noty_theme__jquery-bootstrap.noty_type__alert {
   background-color: #fefefe;
@@ -11494,6 +11567,18 @@ for noty is copyed and modified
   .noty_theme__jquery-bootstrap.noty_type__alert.noty_close_with_click:hover {
     background-color: #f1f1f1;
     color: #747475; }
+  .noty_theme__jquery-bootstrap.noty_type__alert.flash .noty_body {
+    animation-name: noty_keyframes__alert;
+    animation-iteration-count: 3;
+    animation-duration: .5s; }
+
+@keyframes noty_keyframes__success {
+  from, 50%, to {
+    background-color: #d4edda;
+    color: #155724; }
+  25%, 75% {
+    background-color: #8ccf9c;
+    color: #010502; } }
 
 .noty_theme__jquery-bootstrap.noty_type__success {
   background-color: #d4edda;
@@ -11501,6 +11586,18 @@ for noty is copyed and modified
   .noty_theme__jquery-bootstrap.noty_type__success.noty_close_with_click:hover {
     background-color: #c2e5cb;
     color: #10421c; }
+  .noty_theme__jquery-bootstrap.noty_type__success.flash .noty_body {
+    animation-name: noty_keyframes__success;
+    animation-iteration-count: 3;
+    animation-duration: .5s; }
+
+@keyframes noty_keyframes__warning {
+  from, 50%, to {
+    background-color: #fff3cd;
+    color: #856404; }
+  25%, 75% {
+    background-color: #ffdb67;
+    color: #221a01; } }
 
 .noty_theme__jquery-bootstrap.noty_type__warning {
   background-color: #fff3cd;
@@ -11508,6 +11605,18 @@ for noty is copyed and modified
   .noty_theme__jquery-bootstrap.noty_type__warning.noty_close_with_click:hover {
     background-color: #ffedb4;
     color: #6c5103; }
+  .noty_theme__jquery-bootstrap.noty_type__warning.flash .noty_body {
+    animation-name: noty_keyframes__warning;
+    animation-iteration-count: 3;
+    animation-duration: .5s; }
+
+@keyframes noty_keyframes__error {
+  from, 50%, to {
+    background-color: #f8d7da;
+    color: #721c24; }
+  25%, 75% {
+    background-color: #e9808a;
+    color: #20080a; } }
 
 .noty_theme__jquery-bootstrap.noty_type__error {
   background-color: #f8d7da;
@@ -11515,6 +11624,18 @@ for noty is copyed and modified
   .noty_theme__jquery-bootstrap.noty_type__error.noty_close_with_click:hover {
     background-color: #f4c1c6;
     color: #5e171e; }
+  .noty_theme__jquery-bootstrap.noty_type__error.flash .noty_body {
+    animation-name: noty_keyframes__error;
+    animation-iteration-count: 3;
+    animation-duration: .5s; }
+
+@keyframes noty_keyframes__info {
+  from, 50%, to {
+    background-color: #d1ecf1;
+    color: #0c5460; }
+  25%, 75% {
+    background-color: #83ccd9;
+    color: #010505; } }
 
 .noty_theme__jquery-bootstrap.noty_type__info {
   background-color: #d1ecf1;
@@ -11522,3 +11643,7 @@ for noty is copyed and modified
   .noty_theme__jquery-bootstrap.noty_type__info.noty_close_with_click:hover {
     background-color: #bde4eb;
     color: #094049; }
+  .noty_theme__jquery-bootstrap.noty_type__info.flash .noty_body {
+    animation-name: noty_keyframes__info;
+    animation-iteration-count: 3;
+    animation-duration: .5s; }
