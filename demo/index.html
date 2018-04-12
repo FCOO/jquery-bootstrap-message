@@ -9,7 +9,7 @@
 	<meta name='copyright' content='FCOO'>
 	<meta name='owner' content='FCOO'>
 
-    <link  href="bower_components.css" rel="stylesheet">	
+    <link  href="bower_components.css" rel="stylesheet">
     <link  href="font-awesome.css" rel="stylesheet">
     <!-- <link  href="fcoo-fontawesome.css" rel="stylesheet">	 -->
     <style>
@@ -23,18 +23,18 @@
 <body>
 
 
-	
-	
+
+
 	<script src="bower_components.js"></script>
    <script src="../src/jquery-bootstrap-message-BsMessage.js"></script>
     <script src="../src/jquery-bootstrap-message.js"></script>
 
 	<script>
-        i18next.init();        
+        i18next.init();
         i18next.changeLanguage('da');
 
-        $.valueFormat.add({ 
-            id: 'myDateFormat', 
+        $.valueFormat.add({
+            id: 'myDateFormat',
             format: function( moment ){
                 return moment.format('DD-MM-YY HH:mm');
             }
@@ -51,13 +51,13 @@
         var messageGroup = $.bsMessageGroup({
             id            : 'dette_er_id-for_mg',
             url           : 'data/test2.json data/test.json data/test.json data/test.json data/test2.json',
-_reloadPeriod: 'PT20S',
+reloadPeriod: 'PT15S',
             header        : {icon:'fa-i-blocked', text: {da:'Meddelser', en:'Messages'}},
             showStatus    : true,
             showType      : true,
             showTypeColor : true,
             showTypeHeader: true,
-            vfFormat      : 'myDateFormat', 
+            vfFormat      : 'myDateFormat',
             //dateInColumn: true,
             extraWidth: true,
             sortBy: 'INDEX',
@@ -70,11 +70,11 @@ _reloadPeriod: 'PT20S',
 
 
 	    $(function() {
-            $('body').on('click', function(e){ 
+            $('body').on('click', function(e){
                 if (e.target == $('body')[0])
                     messageGroup.asBsModal().show();
             });
-            $('#lang').on('click', function(){ 
+            $('#lang').on('click', function(){
                 i18next.changeLanguage( i18next.language == 'en' ? 'da' : 'en' );
                 $('*').localize();
                 messageGroup.setLanguage( i18next.language );

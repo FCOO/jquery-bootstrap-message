@@ -6,6 +6,7 @@
 Read, list, display, and marks message read from json meta-data file and markdown source-files
 Using [jquery-bootstrap](https://github.com/FCOO/jquery-bootstrap) to create interface and [jquery-bootstrap-markdown](https://github.com/FCOO/jquery-bootstrap-markdown) to convert and display markdown-files
 
+If the loading of the file fails a reload will be scheduled 1s later and will be repeated with increased interval on repeating fails
 
 ## Installation
 ### bower
@@ -29,6 +30,7 @@ http://FCOO.github.io/jquery-bootstrap-message/demo/
 | `reloadPeriod` | `number` or `string` | `null` | millisecond or [ISO 8601 Duration-string](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) with interval for reloading |
 | `onStartLoading` | `function(messageGroup)` | `null` | Called when loading of messages starts |
 | `onFinishLoading` | `function(messageGroup)` | `null` | Called when loading of messages finish |
+| `onErrorLoading` | `function(messageGroup)` | `null` | Called when loading of messages fails |
 | `onCreate`  | `function(messageGroup)` | `null` | Called when group is created |
 | `onChange`  | `function(messageGroup)` | `null` | Called when the status of the group is changed |
 | `loadStatus` | `function(message)` | `return true;` | Return true if the message is read |

@@ -20,6 +20,7 @@
 
             onStartLoading : function( /*messageGroup*/){ },          //Called when loading of messages starts
             onFinishLoading: function( /*messageGroup*/){ },          //Called when loading of messages finish
+            onErrorLoading : function( /*messageGroup*/){ },          //Called when loading of messages fails
 
             onCreate  : function( /*messageGroup*/){ },          //Called when group is created
             onChange  : function( /*messageGroup*/){ },          //Called when the status of the group is changed. (Status=nr of messages, no of (un)read merssages)
@@ -113,29 +114,44 @@
 
             this.list = [];
             this.bsTable = null;
+            this.error = false;
             this.options.onStartLoading( this );
             Promise
                 .all(
                     this.options.url.map( function( url, index ){
                         return Promise.getJSON( url )
-                                .then ( function( json ){
-                                    _this._add( json, url, index );
-                                });
+                                   .then ( function( json ){
+                                       _this._add( json, url, index );
+                                   });
                     })
                 )
-                .finally( this._onLoad.bind(this) );
+                .catch( function(error) {
+                    _this.error = true;
+                    throw error;
+                })
+                .finally( this._finally.bind(this) );
         },
 
-        _onLoad: function(){
-            var _this = this;
-            this.isLoading = false;
-            this.sort();
-            this.options.onCreate( this );
-            this.options.onFinishLoading( this );
-            this._onChange();
-
-            if (this.options.reloadPeriod)
-                window.setTimeout( function(){ _this.load(); }, this.options.reloadPeriod );
+        _finally: function(){
+            var _this = this,
+                reloadPeriod = 0;
+            if (this.error){
+                this.options.onErrorLoading( this );
+                this.retryPeriod = Math.min( this.options.reloadPeriod || 60*60*1000,  this.retryPeriod ? this.retryPeriod*1.5 : 1000 );
+                reloadPeriod = this.retryPeriod;
+            }
+            else {
+                this.isLoading = false;
+                this.retryPeriod = 0;
+                this.sort();
+                this.options.onCreate( this );
+                this.options.onFinishLoading( this );
+                this._onChange();
+                reloadPeriod = this.options.reloadPeriod;
+            }
+            if (reloadPeriod){
+                window.setTimeout( function(){ _this.load(); }, reloadPeriod );
+            }
         },
 
         _onChange: function(){
