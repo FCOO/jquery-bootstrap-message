@@ -55,6 +55,7 @@
         this.options.date = moment( this.options.date );
         this.options.id = this.options.id || 'index_' + this.options.index;
         this.options.status = this.parent.options.loadStatus( this );
+        this.options.icons = this.parent.options.icons;
 
         /*
         Find the publishMoment = the moment where the message is published
@@ -129,8 +130,8 @@
 
             if (this.options.url)
                 title.push(
-                    {text:'...'},
-                    {icon:'fa-angle-right fa-pull-right fa-border'}
+                    {text: '...'},
+                    {icon: this.options.icons.angleRight}
                 );
 
 
@@ -161,8 +162,9 @@
                 //Show the message in a BsMarkdown
                 this.bsMarkdown =
                     this.bsMarkdown || $.bsMarkdown({
-                        url : this.options.url,
-                        link: this.options.link,
+                        url  : this.options.url,
+                        icons: this.options.icons,
+                        link : this.options.link,
                         extraWidth: this.parent.options.extraWidth,
 
                         languages : this.parent.options.languages,
@@ -228,6 +230,12 @@
             id            : '',
             url           : '',
             header        : '',
+            icons: {
+                envelopeOpen  : 'fa-envelope-open',
+                envelopeClosed: 'fa-envelope',
+                angleRight    : 'fa-angle-right fa-pull-right fa-border',
+                externalLink  : 'fa-external-link-alt',
+            },
             reloadPeriod  : '', //period-string with interval for reloading
 
             onStartLoading : function( /*messageGroup*/){ },          //Called when loading of messages starts
@@ -256,7 +264,7 @@
             vfFormat  : '',     //Format-id for the date using jquery-value-format. The format must be defined in the application. If vfFormat == '' the date-column isn't shown
             vfOptions : null,   //Optional options for the format vfFormat when displaying the date using jquery-value-format
 
-            loading   : { icon:' fa-circle-o-notch fa-spin _fa-fw', text: {da:'Indlæser...', en:'Loading...'}}        //Default icon and text displayed in the modal-window during loading
+            loading   : { icon: 'fa-circle-notch fa-spin', text: {da:'Indlæser...', en:'Loading...'}}        //Default icon and text displayed in the modal-window during loading
 		}, options || {} );
 
         //Convert url to array of string
@@ -391,7 +399,7 @@
 
         //_getStatusIcon( type ) return the icon used for status
         _getStatusIcon: function( status, asClassName ){
-            var result = status ? {icon:'fa-envelope-open-o'} : {icon: 'fa-envelope'};
+            var result = status ? {icon: this.options.icons.envelopeOpen} : {icon: this.options.icons.envelopeClosed};
             return asClassName ? result.icon : result;
         },
 
@@ -406,7 +414,7 @@
                     statusOffIcon = this._getStatusIcon(false).icon;
 
                 if (this.bsTable)
-                    this.bsTable.find('tr#_'+message.options.id+' td i.fa.'+statusOffIcon)
+                    this.bsTable.find('tr#_'+message.options.id+' td i.' + $.FONTAWESOME_PREFIX + '.'+statusOffIcon)
                         .removeClass(statusOffIcon)
                         .addClass(statusOnIcon);
 

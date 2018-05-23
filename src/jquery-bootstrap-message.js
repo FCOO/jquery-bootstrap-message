@@ -16,6 +16,12 @@
             id            : '',
             url           : '',
             header        : '',
+            icons: {
+                envelopeOpen  : 'fa-envelope-open',
+                envelopeClosed: 'fa-envelope',
+                angleRight    : 'fa-angle-right fa-pull-right fa-border',
+                externalLink  : 'fa-external-link-alt',
+            },
             reloadPeriod  : '', //period-string with interval for reloading
 
             onStartLoading : function( /*messageGroup*/){ },          //Called when loading of messages starts
@@ -44,7 +50,7 @@
             vfFormat  : '',     //Format-id for the date using jquery-value-format. The format must be defined in the application. If vfFormat == '' the date-column isn't shown
             vfOptions : null,   //Optional options for the format vfFormat when displaying the date using jquery-value-format
 
-            loading   : { icon:' fa-circle-o-notch fa-spin _fa-fw', text: {da:'Indlæser...', en:'Loading...'}}        //Default icon and text displayed in the modal-window during loading
+            loading   : { icon: 'fa-circle-notch fa-spin', text: {da:'Indlæser...', en:'Loading...'}}        //Default icon and text displayed in the modal-window during loading
 		}, options || {} );
 
         //Convert url to array of string
@@ -179,7 +185,7 @@
 
         //_getStatusIcon( type ) return the icon used for status
         _getStatusIcon: function( status, asClassName ){
-            var result = status ? {icon:'fa-envelope-open-o'} : {icon: 'fa-envelope'};
+            var result = status ? {icon: this.options.icons.envelopeOpen} : {icon: this.options.icons.envelopeClosed};
             return asClassName ? result.icon : result;
         },
 
@@ -194,7 +200,7 @@
                     statusOffIcon = this._getStatusIcon(false).icon;
 
                 if (this.bsTable)
-                    this.bsTable.find('tr#_'+message.options.id+' td i.fa.'+statusOffIcon)
+                    this.bsTable.find('tr#_'+message.options.id+' td i.' + $.FONTAWESOME_PREFIX + '.'+statusOffIcon)
                         .removeClass(statusOffIcon)
                         .addClass(statusOnIcon);
 

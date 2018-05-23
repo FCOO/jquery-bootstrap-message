@@ -48434,6 +48434,9 @@ if (typeof define === 'function' && define.amd) {
             fixedContent: null,         //fixed content for the modal-window
             footer      : null,         //footer for the modal-window
             loading     : null,         //Default icon and text displayed in the modal-window during loading
+            icons       : {
+                externalLink: 'fa-external-link'
+            }
 		}, options || {} );
 
 
@@ -48573,7 +48576,7 @@ if (typeof define === 'function' && define.amd) {
                     footer  : this.options.footer,
 
                     buttons : this.options.link ? [{
-                                 icon   : 'fa-external-link',
+                                 icon   : this.options.icons.externalLink,
                                  text   : {da:'Vis i nyt vindue', en:'Show in new window'},
                                  onClick: function(){
                                               var win = window.open(_this.options.link, '_blank');

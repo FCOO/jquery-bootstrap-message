@@ -1,38 +1,36 @@
 {
-    "name": "jquery-bootstrap-message",
-    "version": "1.4.1",
-    "homepage": "https://github.com/FCOO/jquery-bootstrap-message",
-    "authors": [
-        "Niels Holt"
-    ],
-    "description": "",
-    "main": [
-        "dist/jquery-bootstrap-message.js"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/FCOO/jquery-bootstrap-message.git"
-    },
-    "dependencies": {
-        "jquery": "latest",
-        "jquery-bootstrap": "fcoo/jquery-bootstrap#^1.2.0",
-        "moment": "latest",
-        "showdown": "^1.8.0",
-        "promise-get": "fcoo/promise-get#latest",
-        "jquery-bootstrap-markdown": "fcoo/jquery-bootstrap-markdown#^0.2.0"
-    },
-    "devDependencies": {
-        "fcoo-fontawesome": "FCOO/fcoo-fontawesome#^2.0.1"
-    },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "moduleType": [
-        "es6"
-    ]
+  "name": "jquery-bootstrap-message",
+  "version": "1.5.0",
+  "homepage": "https://github.com/FCOO/jquery-bootstrap-message",
+  "authors": [
+    "Niels Holt"
+  ],
+  "description": "",
+  "main": [
+    "dist/jquery-bootstrap-message.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/jquery-bootstrap-message.git"
+  },
+  "dependencies": {
+    "jquery": "latest",
+    "jquery-bootstrap": "fcoo/jquery-bootstrap#^1.2.0",
+    "moment": "latest",
+    "showdown": "^1.8.0",
+    "promise-get": "fcoo/promise-get#latest",
+    "jquery-bootstrap-markdown": "fcoo/jquery-bootstrap-markdown#^0.3.0"
+  },
+  "devDependencies": {},
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ]
 }

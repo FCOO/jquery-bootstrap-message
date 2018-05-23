@@ -55,6 +55,7 @@
         this.options.date = moment( this.options.date );
         this.options.id = this.options.id || 'index_' + this.options.index;
         this.options.status = this.parent.options.loadStatus( this );
+        this.options.icons = this.parent.options.icons;
 
         /*
         Find the publishMoment = the moment where the message is published
@@ -129,8 +130,8 @@
 
             if (this.options.url)
                 title.push(
-                    {text:'...'},
-                    {icon:'fa-angle-right fa-pull-right fa-border'}
+                    {text: '...'},
+                    {icon: this.options.icons.angleRight}
                 );
 
 
@@ -161,8 +162,9 @@
                 //Show the message in a BsMarkdown
                 this.bsMarkdown =
                     this.bsMarkdown || $.bsMarkdown({
-                        url : this.options.url,
-                        link: this.options.link,
+                        url  : this.options.url,
+                        icons: this.options.icons,
+                        link : this.options.link,
                         extraWidth: this.parent.options.extraWidth,
 
                         languages : this.parent.options.languages,
