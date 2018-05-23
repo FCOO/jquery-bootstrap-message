@@ -3612,7 +3612,7 @@ Border-colors
 IMPORT BOOTSTRAP SCSS
 ************************************************/
 /*!
- * Bootstrap v4.1.0 (https://getbootstrap.com/)
+ * Bootstrap v4.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -3663,7 +3663,7 @@ html {
 @-ms-viewport {
   width: device-width; }
 
-article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
 body {
@@ -3771,7 +3771,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: monospace, monospace;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 1em; }
 
 pre {
@@ -4026,12 +4026,6 @@ mark,
 .figure-caption {
   font-size: 90%;
   color: #6c757d; }
-
-code,
-kbd,
-pre,
-samp {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 
 code {
   font-size: 87.5%;
@@ -5072,6 +5066,11 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   .custom-select.is-valid ~ .valid-tooltip {
     display: block; }
 
+.was-validated .form-control-file:valid ~ .valid-feedback,
+.was-validated .form-control-file:valid ~ .valid-tooltip, .form-control-file.is-valid ~ .valid-feedback,
+.form-control-file.is-valid ~ .valid-tooltip {
+  display: block; }
+
 .was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
   color: #28a745; }
 
@@ -5148,6 +5147,11 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   .custom-select.is-invalid ~ .invalid-feedback,
   .custom-select.is-invalid ~ .invalid-tooltip {
     display: block; }
+
+.was-validated .form-control-file:invalid ~ .invalid-feedback,
+.was-validated .form-control-file:invalid ~ .invalid-tooltip, .form-control-file.is-invalid ~ .invalid-feedback,
+.form-control-file.is-invalid ~ .invalid-tooltip {
+  display: block; }
 
 .was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
   color: #dc3545; }
@@ -6031,8 +6035,7 @@ input[type="button"].btn-block {
     .input-group > .custom-file:not(:last-child) .custom-file-label::after {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0; }
-    .input-group > .custom-file:not(:first-child) .custom-file-label,
-    .input-group > .custom-file:not(:first-child) .custom-file-label::after {
+    .input-group > .custom-file:not(:first-child) .custom-file-label {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0; }
 
@@ -6125,11 +6128,12 @@ input[type="button"].btn-block {
       background-color: #e9ecef; }
 
 .custom-control-label {
+  position: relative;
   margin-bottom: 0; }
   .custom-control-label::before {
     position: absolute;
     top: 0.25rem;
-    left: 0;
+    left: -1.5rem;
     display: block;
     width: 1rem;
     height: 1rem;
@@ -6141,7 +6145,7 @@ input[type="button"].btn-block {
   .custom-control-label::after {
     position: absolute;
     top: 0.25rem;
-    left: 0;
+    left: -1.5rem;
     display: block;
     width: 1rem;
     height: 1rem;
@@ -6269,7 +6273,7 @@ input[type="button"].btn-block {
     bottom: 0;
     z-index: 3;
     display: block;
-    height: calc(calc(2.5rem + 2px) - 1px * 2);
+    height: 2.5rem;
     padding: 0.5rem 0.75rem;
     line-height: 1.5;
     color: #495057;
@@ -7843,6 +7847,7 @@ button.close {
     margin-right: 3px;
     margin-left: 3px;
     text-indent: -999px;
+    cursor: pointer;
     background-color: rgba(255, 255, 255, 0.5); }
     .carousel-indicators li::before {
       position: absolute;
@@ -9941,7 +9946,17 @@ a.text-dark:hover, a.text-dark:focus {
       background-color: #fff !important; }
   .table-bordered th,
   .table-bordered td {
-    border: 1px solid #dee2e6 !important; } }
+    border: 1px solid #dee2e6 !important; }
+  .table-dark {
+    color: inherit; }
+    .table-dark th,
+    .table-dark td,
+    .table-dark thead th,
+    .table-dark tbody + tbody {
+      border-color: #dee2e6; }
+  .table .thead-dark th {
+    color: inherit;
+    border-color: #dee2e6; } }
 
 /***********************************************
 IMPORT SELECT2 SCSS
@@ -10611,10 +10626,8 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
-.container-icon-and-text > * {
-  line-height: inherit !important; }
-  .container-icon-and-text > *.after-icon {
-    padding-left: 0.3em; }
+.container-icon-and-text > *.after-icon {
+  padding-left: 0.3em; }
 
 /************************************************************
 BUTTON
@@ -10650,6 +10663,8 @@ div.btn, div.list-group-item {
   /************************************************************
     Special version to have extra large icon
     ************************************************************/ }
+  .btn.btn-standard.min-width {
+    min-width: 5em; }
   .btn.btn-standard:active, .btn.btn-standard.active {
     background-color: #e2e6ea;
     background-image: none;
@@ -11007,6 +11022,8 @@ Icons for modal header inside a container
     cursor: default;
     margin: 0;
     padding: 0.125rem; }
+    .header-icon-container .header-icon.disabled {
+      opacity: .25; }
     .header-icon-container .header-icon:not(.disabled):hover:hover, .header-icon-container .header-icon:not(.disabled):hover:focus {
       color: #000;
       text-decoration: none;
@@ -11017,14 +11034,24 @@ Icons for modal header inside a container
       content: '\ea41'; }
     .header-icon-container .header-icon.header-icon-diminish:before {
       content: '\ea43'; }
+    .header-icon-container .header-icon.header-icon-back:before {
+      content: '\ea44'; }
+    .header-icon-container .header-icon.header-icon-forward:before {
+      content: '\ea42'; }
+    .header-icon-container .header-icon.header-icon-info:before {
+      content: '\ea0c'; }
+    .header-icon-container .header-icon.header-icon-help:before {
+      content: '\ea09'; }
+    .header-icon-container .header-icon.header-icon-pin:before {
+      content: '\e946'; }
     .header-icon-container .header-icon.header-icon-close:before {
       content: '\ed65'; }
-    .header-icon-container .header-icon.header-icon-close:hover:before {
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:before {
       content: "\ed66"; }
-    .header-icon-container .header-icon.header-icon-close:hover:hover, .header-icon-container .header-icon.header-icon-close:hover:focus {
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:hover, .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:focus {
       color: #dc3545;
       opacity: 1; }
-    .header-icon-container .header-icon.header-icon-close:hover:active {
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:active {
       color: #c82333; }
 
 /**************************************************
@@ -11603,6 +11630,62 @@ body.modal-open .modal {
   .modal-inline.modal-sm .modal-content .modal-footer-header:empty {
     display: none; }
 
+.modal.modal-xs .modal-content .modal-header,
+.modal-inline.modal-xs .modal-content .modal-header {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  padding: 0.15rem 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  border-bottom: 1px solid #9aa1a8;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0; }
+  .modal.modal-xs .modal-content .modal-header span,
+  .modal-inline.modal-xs .modal-content .modal-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.modal.modal-xs .modal-content .modal-body,
+.modal.modal-xs .modal-content .modal-body-fixed,
+.modal-inline.modal-xs .modal-content .modal-body,
+.modal-inline.modal-xs .modal-content .modal-body-fixed {
+  padding: 0.25rem 0.25rem;
+  font-size: 0.875rem; }
+
+.modal.modal-xs .modal-content .modal-footer-header,
+.modal-inline.modal-xs .modal-content .modal-footer-header {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  color: #495057;
+  background-color: #f2f2f2;
+  line-height: 1;
+  border-top: 1px solid #9aa1a8;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important; }
+  .modal.modal-xs .modal-content .modal-footer-header span,
+  .modal-inline.modal-xs .modal-content .modal-footer-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .modal.modal-xs .modal-content .modal-footer-header:empty,
+  .modal-inline.modal-xs .modal-content .modal-footer-header:empty {
+    display: none; }
+
+.modal.modal-xs .modal-content .modal-footer,
+.modal-inline.modal-xs .modal-content .modal-footer {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem; }
+
 .modal .modal-body-fixed.scrollbar-vertical, .modal-inline .modal-body-fixed.scrollbar-vertical {
   padding-left: 0.75rem;
   padding-right: 0.75rem; }
@@ -11697,6 +11780,9 @@ MODAL-BACKDROP
 /************************************************************
 FORM
 ************************************************************/
+.form-group .input-group {
+  flex-wrap: nowrap; }
+
 .form-control {
   border: 1px solid #ced4da;
   outline: none !important; }
@@ -11761,7 +11847,7 @@ Only supports the html-structure
     top: 0;
     cursor: default;
     opacity: 1;
-    transition: all .2s;
+    transition: all .2s, visibility 0s;
     z-index: 4;
     line-height: 1;
     color: #495057;
@@ -11784,7 +11870,7 @@ Only supports the html-structure
     cursor: text; }
   .input-group .has-float-label .form-control-with-label::-webkit-input-placeholder, .input-group .has-float-label .form-control-with-label::-moz-placeholder, .input-group .has-float-label .form-control-with-label:-ms-input-placeholder, .input-group .has-float-label .form-control-with-label::placeholder {
     opacity: 1;
-    transition: all .2s; }
+    transition: all .2s, visibility 0s; }
   .input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus)::-webkit-input-placeholder {
     opacity: 0; }
   .input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus)::-moz-placeholder {
@@ -12018,12 +12104,12 @@ Using Bootstrap Collapse to create accordion
   .accordion .card-header.collapsed .chevrolet:before {
     content: '\f054'; }
 
-.accordion .card-block {
+.accordion .collapse .card-block {
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
   border-radius: 0.25rem; }
 
-.accordion .card-footer {
+.accordion .collapse .card-footer {
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -12038,14 +12124,19 @@ Using Bootstrap Collapse to create accordion
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem; }
-  .accordion .card-footer span {
+  .accordion .collapse .card-footer span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  .accordion .card-footer:empty {
+  .accordion .collapse .card-footer:empty {
     display: none; }
 
+.accordion.no-transition .collapsing,
+.accordion.no-transition .collapse {
+  transition: none !important; }
+
 .modal-sm .accordion .card-header,
+.modal-xs .accordion .card-header,
 .accordion-sm .card-header {
   font-weight: 400;
   display: flex;
@@ -12056,17 +12147,20 @@ Using Bootstrap Collapse to create accordion
   line-height: 1.5;
   border-radius: inherit; }
   .modal-sm .accordion .card-header span,
+  .modal-xs .accordion .card-header span,
   .accordion-sm .card-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
 
 .modal-sm .accordion .card-block,
+.modal-xs .accordion .card-block,
 .accordion-sm .card-block {
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
 
 .modal-sm .accordion .card-footer,
+.modal-xs .accordion .card-footer,
 .accordion-sm .card-footer {
   font-weight: 400;
   display: flex;
@@ -12083,11 +12177,13 @@ Using Bootstrap Collapse to create accordion
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem; }
   .modal-sm .accordion .card-footer span,
+  .modal-xs .accordion .card-footer span,
   .accordion-sm .card-footer span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .modal-sm .accordion .card-footer:empty,
+  .modal-xs .accordion .card-footer:empty,
   .accordion-sm .card-footer:empty {
     display: none; }
 
@@ -12660,13 +12756,8 @@ https://github.com/berkan52/select2-bootstrap4-theme
         content: ""; }
     .select2-container--standard .select2-selection--single .select2-selection__placeholder {
       color: #6c757d; }
-  .select2-container--standard .select2-selection__placeholder_label {
-    display: none;
-    color: #6c757d; }
   .select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder > .container-icon-and-text:first-child {
-    display: none; }
-  .select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder .select2-selection__placeholder_label {
-    display: inline-block; }
+    opacity: 0; }
   .select2-container--standard.select2-container-sm .select2-results {
     max-height: 7.25rem; }
   .select2-container--standard.select2-container-sm .select2-selection,
@@ -12758,12 +12849,13 @@ https://github.com/berkan52/select2-bootstrap4-theme
 
 ************************************************/
 /************************************************************
-Style for formValidation (via fcoo-formValidation)
+Style for formValidation (via fcoo-form-validation)
 ************************************************************/
 .form-group {
   line-height: 1;
   margin-bottom: 0;
-  padding-bottom: 1.675rem; }
+  padding-top: 0.5rem;
+  padding-bottom: 1.875rem; }
   .form-group .form-control-feedback {
     line-height: 1;
     padding-top: 0;
@@ -12771,7 +12863,7 @@ Style for formValidation (via fcoo-formValidation)
   .form-group.has-warning {
     padding-bottom: 0px; }
   .form-group .form-control-feedback {
-    height: 1.675rem;
+    height: 1.875rem;
     font-size: 0.875rem;
     color: #dc3545;
     padding-left: 0.75rem;
@@ -12780,23 +12872,28 @@ Style for formValidation (via fcoo-formValidation)
     display: inline-block !important; }
 
 .form-group.form-group-sm {
-  padding-bottom: 1.15rem; }
+  padding-top: 0.25rem;
+  padding-bottom: 1.25rem; }
   .form-group.form-group-sm.has-warning {
     padding-bottom: 0px; }
   .form-group.form-group-sm .form-control-feedback {
-    height: 1.15rem;
+    height: 1.25rem;
     font-size: 0.75rem;
     color: #dc3545;
     padding-left: 0.25rem;
     vertical-align: top; }
 
 .form-group.form-group-xs {
-  padding-bottom: 0.91rem; }
+  padding-top: 0.1rem;
+  padding-bottom: 0.95rem; }
   .form-group.form-group-xs.has-warning {
     padding-bottom: 0px; }
   .form-group.form-group-xs .form-control-feedback {
-    height: 0.91rem;
+    height: 0.95rem;
     font-size: 0.75rem;
     color: #dc3545;
     padding-left: 0.15rem;
     vertical-align: top; }
+
+.form-group.fv-do-not-validate {
+  visibility: hidden; }
