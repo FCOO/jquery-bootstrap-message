@@ -226,7 +226,7 @@
 	"use strict";
 
     function BsMessageGroup( options ) {
-		this.options = $.extend({}, {
+		this.options = $.extend(true, {}, {
             id            : '',
             url           : '',
             header        : '',
@@ -234,7 +234,7 @@
                 envelopeOpen  : 'fa-envelope-open',
                 envelopeClosed: 'fa-envelope',
                 angleRight    : 'fa-angle-right fa-pull-right fa-border',
-                externalLink  : 'fa-external-link-alt',
+                externalLink  : 'fa-external-link',
             },
             reloadPeriod  : '', //period-string with interval for reloading
 
