@@ -481,7 +481,7 @@
                 $.each( sortByList, function( index, sortBy ){
                     switch (sortBy){
                         case 'INDEX' : val1 = mess1.options.totalIndex;         val2 = mess2.options.totalIndex;        break;
-                        case 'DATE'  : val1 = mess1.options.date.second();      val2 = mess2.options.date.second();     break;
+                        case 'DATE'  : val1 = mess1.options.date.valueOf();     val2 = mess2.options.date.valueOf();    break;
                         case 'STATUS': val1 = mess1.options.status ? 1 : 0;     val2 = mess2.options.status ? 1 : 0;    break;
                         case 'TYPE'  : val1 = typeToVal[mess1.options.type];    val2 = typeToVal[mess2.options.type];   break;
                         default      : val1 = val2 = 0;
