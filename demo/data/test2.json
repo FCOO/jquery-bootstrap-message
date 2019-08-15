@@ -10,7 +10,7 @@
             "type": "warning",
             "url": "data/browser/da.md",
             "title": {"da":"test2-1 Test af Operativsystemer og Browsere", "en":"Test of Operating Systems and Browsers"},
-            "link": "http://ifm.fcoo.dk/browser/"
+            "_link": "http://ifm.fcoo.dk/browser/"
         },
         {
             "id": "2-2",

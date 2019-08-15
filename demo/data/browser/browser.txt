@@ -38,6 +38,9 @@ There are a number of [known issues](#known_issues) and we are unfortunately not
 
 </en>
 
+<da>Dette er et url-link to <link   url="/demo/data/test1.txt">data/test1.txt</link></da>
+<en>This is a url-link to <link   url="/demo/data/test1.txt">data/test1.txt</link></en>
+
 | <da>Enhed</da><en>Device</en> | <da>Operativsystem</da><en>Operating System</en>  | <div class="icon firefox" title="Firefox"/> | <div class="icon chrome" title="Chrome"/> | <div class="icon edge" title="Edge"/> | <div class="icon ie11" title="IE 11"/> | <div class="icon opera" title="Opera"/> | <div class="icon safari" title="Safari"/> | <da>Testet på</da><en>Tested on</en> |
 | :--: | :--- | :--: | :--: | :--: | :--: | :--: |:--- |
 | Desktop         | Windows 10         | <div class="icon check"/> | <div class="icon check"/> | <div class="icon check"/> | <div class="icon check"/> | <div class="icon check"/> |                           | Desktop PC            | 

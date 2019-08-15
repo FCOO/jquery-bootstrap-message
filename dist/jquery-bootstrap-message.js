@@ -234,7 +234,7 @@
                 envelopeOpen  : 'fa-envelope-open',
                 envelopeClosed: 'fa-envelope',
                 angleRight    : 'fa-angle-right fa-pull-right fa-border',
-                externalLink  : 'fa-external-link',
+                externalLink  : 'fa-external-link-alt',
             },
             reloadPeriod  : '', //period-string with interval for reloading
 

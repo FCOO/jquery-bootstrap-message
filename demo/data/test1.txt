@@ -1,0 +1,6 @@
+<da>## Test Nummer 1</da>
+<en>## Test Number 1</en>
+
+
+<da>Dette er et link to <link url="data/test2.txt">test2.txt</link></da>
+<en>This is a link to <link url="data/test2.txt">test2.txt</link></en>

@@ -10,7 +10,8 @@
 	<meta name='owner' content='FCOO'>
 
     <link  href="bower_components.css" rel="stylesheet">
-    <link  href="css/fontawesome-all.css" rel="stylesheet">
+    <link  href="css/all.css" rel="stylesheet">
+
     <style>
         html, body {
             height:100%;
@@ -21,17 +22,21 @@
 
 <body>
     <script src="bower_components.js"></script>
+
     <script src="../src/jquery-bootstrap-message-BsMessage.js"></script>
     <script src="../src/jquery-bootstrap-message.js"></script>
 
 	<script>
+        window.bsIsTouch = false;
+        window.bsIsTouch = (window.location.search =='?touch');
+
         i18next.init();
         i18next.changeLanguage('da');
 
         $.valueFormat.add({
             id: 'myDateFormat',
-            format: function( moment ){
-                return moment.format('DD-MM-YY HH:mm');
+            format: function( dateStr ){
+                return moment(dateStr).format('DD-MM-YY HH:mm');
             }
         });
 
@@ -45,7 +50,8 @@
 
         var messageGroup = $.bsMessageGroup({
             id            : 'dette_er_id-for_mg',
-            url           : 'data/test2.json data/test.json data/test.json data/test.json data/test2.json',
+//            url           : 'data/test2.json data/test.json data/test.json data/test.json data/test2.json',
+            url           : 'data/test2.json data/test.json',
 //reloadPeriod: 'PT20S',
             header        : {icon:'fa-info-circle', text: {da:'Meddelser', en:'Messages'}},
             showStatus    : true,
