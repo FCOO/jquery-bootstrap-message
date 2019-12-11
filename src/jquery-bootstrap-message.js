@@ -106,12 +106,14 @@
             var _this = this;
             this.isLoading = true;
 
-            $.each( this.list, function( index, message ){
-                if (message.bsModal){
-                    message.bsModal.modal('hide');
-                    message.bsModal.remove();
-                }
-            });
+
+            if (this.bsModalMessage){
+                this.bsModalMessage.modal('hide');
+                this.bsModalMessage.remove();
+            }
+            this.bsModalMessage = null;
+
+
             if (this.bsModal){
                 this.bsModal.modal('hide');
                 this.bsModal.remove();

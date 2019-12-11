@@ -149,6 +149,16 @@
         asBsModal - return a bsModal with all messages
         **********************************************/
         asBsModal: function( show ){
+
+            if (this.parent.bsModalMessage){
+                this.parent.bsModalMessage.modal('hide');
+                this.parent.bsModalMessage.remove();
+            }
+            this.parent.bsModalMessage = null;
+
+
+
+
             this.setStatus( true );
             var footer = this.parent.options.vfFormat ? {
                             vfValue  : this.options.date,
@@ -178,13 +188,13 @@
                         loading: this.parent.options.loading
                     });
 
-                this.bsModal = this.bsMarkdown.asBsModal( false );
+                this.parent.bsModalMessage = this.bsMarkdown.asBsModal( false );
             }
 
             else {
 
                 //No file => just display the title in a BsModal
-                this.bsModal = this.bsModal || $.bsModal({
+                this.parent.bsModalMessage = $.bsModal({
                     scroll : false,
                     header : this.parent.options.showTypeHeader ? {
                                 icon: $.bsNotyIcon[this.options.type],
@@ -203,7 +213,7 @@
             }
 
             if (show)
-                this.bsModal.show();
+                this.parent.bsModalMessage.show();
         }
 	};
 
@@ -320,12 +330,14 @@
             var _this = this;
             this.isLoading = true;
 
-            $.each( this.list, function( index, message ){
-                if (message.bsModal){
-                    message.bsModal.modal('hide');
-                    message.bsModal.remove();
-                }
-            });
+
+            if (this.bsModalMessage){
+                this.bsModalMessage.modal('hide');
+                this.bsModalMessage.remove();
+            }
+            this.bsModalMessage = null;
+
+
             if (this.bsModal){
                 this.bsModal.modal('hide');
                 this.bsModal.remove();
