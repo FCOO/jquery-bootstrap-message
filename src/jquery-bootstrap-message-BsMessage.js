@@ -127,13 +127,11 @@
 
             title.push( {text: this.options.title} );
 
-
             if (this.options.url)
                 title.push(
                     {text: '...'},
                     {icon: this.options.icons.angleRight}
                 );
-
 
             return {
                 id    : '_' + this.options.id,
@@ -142,22 +140,14 @@
                 date  : this.options.date,
                 title : title
             };
-
         },
 
         /**********************************************
         asBsModal - return a bsModal with all messages
         **********************************************/
         asBsModal: function( show ){
-
-            if (this.parent.bsModalMessage){
-                this.parent.bsModalMessage.modal('hide');
-                this.parent.bsModalMessage.remove();
-            }
-            this.parent.bsModalMessage = null;
-
-
-
+            this.parent._closeCurrentMessageModal();
+            this.parent.currentMessage = this;
 
             this.setStatus( true );
             var footer = this.parent.options.vfFormat ? {
@@ -187,14 +177,13 @@
                         footer : footer,
                         loading: this.parent.options.loading
                     });
-
-                this.parent.bsModalMessage = this.bsMarkdown.asBsModal( false );
+                this.currentModal = this.bsMarkdown.asBsModal( false );
             }
 
             else {
 
                 //No file => just display the title in a BsModal
-                this.parent.bsModalMessage = $.bsModal({
+                this.currentModal = $.bsModal({
                     scroll : false,
                     header : this.parent.options.showTypeHeader ? {
                                 icon: $.bsNotyIcon[this.options.type],
@@ -213,7 +202,7 @@
             }
 
             if (show)
-                this.parent.bsModalMessage.show();
+                this.currentModal.show();
         }
 	};
 

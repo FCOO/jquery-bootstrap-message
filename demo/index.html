@@ -40,12 +40,9 @@
             }
         });
 
-        Promise.defaultErrorHandler = function( reason ){
-            console.log('* ERROR *');
-            console.log(reason);
-            console.log('*********');
+        Promise.defaultErrorHandler = function(errorObj){
+            console.log('defaultErrorHandler', errorObj );
         };
-
 
 
         var messageGroup = $.bsMessageGroup({
@@ -64,9 +61,9 @@
             sortBy: 'INDEX',
             //sortDesc: true,
             loadStatus     : function( message) { return (message.options.index % 2) == 1; },
-            onStartLoading : function( messageGroup ){ console.log('Start loading'); },
-            onFinishLoading: function( messageGroup ){ console.log('Finish loading'); },
-            onChange       : function( messageGroup ){ console.log('onChange', messageGroup.getAllStatus()); },
+            onStartLoading : function( messageGroup ){ return; console.log('Start loading'); },
+            onFinishLoading: function( messageGroup ){ return; console.log('Finish loading'); },
+            onChange       : function( messageGroup ){ return; console.log('onChange', messageGroup.getAllStatus()); },
         });
 
 

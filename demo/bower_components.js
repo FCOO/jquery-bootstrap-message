@@ -17750,11 +17750,11 @@ return jQuery;
 	var minor = parseInt(splitVersion[1]);
 
 	var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
-	
+
 	function eventsData($el) {
 		return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
 	}
-	
+
 	function moveHandlerToTop($el, eventName, isDelegated) {
 		var data = eventsData($el);
 		var events = data[eventName];
@@ -17772,7 +17772,7 @@ return jQuery;
 			events.unshift(events.pop());
 		}
 	}
-	
+
 	function moveEventHandlers($elems, eventsString, isDelegate) {
 		var events = eventsString.split(/\s+/);
 		$elems.each(function() {
@@ -17782,7 +17782,7 @@ return jQuery;
 			}
 		});
 	}
-	
+
 	function makeMethod(methodName) {
 		$.fn[methodName + 'First'] = function() {
 			var args = $.makeArray(arguments);
@@ -17807,7 +17807,7 @@ return jQuery;
 	$.fn.delegateFirst = function() {
 		var args = $.makeArray(arguments);
 		var eventsString = args[1];
-		
+
 		if (eventsString) {
 			args.splice(0, 2);
 			$.fn.delegate.apply(this, arguments);
@@ -17827,7 +17827,7 @@ return jQuery;
 
 		return this;
 	};
-	
+
 	// on (jquery >= 1.7)
 	if (!JQ_LT_17) {
 		$.fn.onFirst = function(types, selector) {
@@ -23747,6 +23747,11 @@ if (typeof define === 'function' && define.amd) {
                           //Called when the list is updated.
                           //backwardAvail [BOOLEAN] true if it is possible to go backwards
                           //forwardAvail [BOOLEAN] true if it is possible to go forwards
+                       },
+            compare  : function( item1, item2 ){
+                           //Compare two items and return true if the two items are equal
+                           //Can be overwriten for other types of items
+                           return (item1 == item2);
                        }
 
         }, options || {} );
@@ -23776,6 +23781,19 @@ if (typeof define === 'function' && define.amd) {
 	ns.HistoryList.prototype = {
 
         add: function( item ){
+            //Check:
+            if (this.addToList){
+                //1: Is item already the current item on the list => do not add
+                if ( this.list.length && this.options.compare(item, this.list[this.index]) )
+                    this.addToList = false;
+                else
+                    //2: Is item the next item => goForward
+                    if ((this.index < this.lastIndex) &&  this.options.compare(item, this.list[this.index+1]) ) {
+                        this.index++;
+                        this.addToList = false;
+                    }
+            }
+
             if (this.addToList){
                 this.index++;
                 this.list.splice(this.index);
@@ -25660,7 +25678,7 @@ if (typeof define === 'function' && define.amd) {
             lng = _name$split4[0],
             ns = _name$split4[1];
 
-        this.read(lng, ns, 'read', null, null, function (err, data) {
+        this.read(lng, ns, 'read', undefined, undefined, function (err, data) {
           if (err) _this5.logger.warn("".concat(prefix, "loading namespace ").concat(ns, " for language ").concat(lng, " failed"), err);
           if (!err && data) _this5.logger.log("".concat(prefix, "loaded namespace ").concat(ns, " for language ").concat(lng), data);
 
@@ -26397,8 +26415,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -26492,8 +26510,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ], 
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ],
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, window, undefined) {
@@ -28006,7 +28024,7 @@ if (typeof define === 'function' && define.amd) {
             function seekPrevious(pos, newBlock) {
                 var position = pos, tests;
                 if (position <= 0) return 0;
-                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position), 
+                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position),
                 tests.length < 2 || tests.length === 2 && tests[1].match.def === ""))) {}
                 return position;
             }
@@ -29243,8 +29261,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($) {
@@ -29273,8 +29291,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -29525,8 +29543,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -30076,8 +30094,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ], 
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ],
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, Inputmask) {
@@ -30227,9 +30245,9 @@ if (typeof define === 'function' && define.amd) {
 (function ( $ ) {
 	var attachEvent = document.attachEvent,
 		stylesCreated = false;
-	
+
 	var jQuery_resize = $.fn.resize;
-	
+
 	$.fn.resize = function(callback) {
 		return this.each(function() {
 			if(this == window)
@@ -30244,14 +30262,14 @@ if (typeof define === 'function' && define.amd) {
 			removeResizeListener(this, callback);
 		});
 	}
-	
+
 	if (!attachEvent) {
 		var requestFrame = (function(){
 			var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
 								function(fn){ return window.setTimeout(fn, 20); };
 			return function(fn){ return raf(fn); };
 		})();
-		
+
 		var cancelFrame = (function(){
 			var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
 								   window.clearTimeout;
@@ -30275,7 +30293,7 @@ if (typeof define === 'function' && define.amd) {
 			return element.offsetWidth != element.__resizeLast__.width ||
 						 element.offsetHeight != element.__resizeLast__.height;
 		}
-		
+
 		function scrollListener(e){
 			var element = this;
 			resetTriggers(this);
@@ -30290,7 +30308,7 @@ if (typeof define === 'function' && define.amd) {
 				}
 			});
 		};
-		
+
 		/* Detect CSS Animations support to detect element display/re-attach */
 		var animation = false,
 			animationstring = 'animation',
@@ -30301,8 +30319,8 @@ if (typeof define === 'function' && define.amd) {
 			pfx  = '';
 		{
 			var elm = document.createElement('fakeelement');
-			if( elm.style.animationName !== undefined ) { animation = true; }    
-			
+			if( elm.style.animationName !== undefined ) { animation = true; }
+
 			if( animation === false ) {
 				for( var i = 0; i < domPrefixes.length; i++ ) {
 					if( elm.style[ domPrefixes[i] + 'AnimationName' ] !== undefined ) {
@@ -30316,12 +30334,12 @@ if (typeof define === 'function' && define.amd) {
 				}
 			}
 		}
-		
+
 		var animationName = 'resizeanim';
 		var animationKeyframes = '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
 		var animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
 	}
-	
+
 	function createStyles() {
 		if (!stylesCreated) {
 			//opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
@@ -30330,7 +30348,7 @@ if (typeof define === 'function' && define.amd) {
 					'.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \"; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
 				head = document.head || document.getElementsByTagName('head')[0],
 				style = document.createElement('style');
-			
+
 			style.type = 'text/css';
 			if (style.styleSheet) {
 				style.styleSheet.cssText = css;
@@ -30342,7 +30360,7 @@ if (typeof define === 'function' && define.amd) {
 			stylesCreated = true;
 		}
 	}
-	
+
 	window.addResizeListener = function(element, fn){
 		if (attachEvent) element.attachEvent('onresize', fn);
 		else {
@@ -30357,7 +30375,7 @@ if (typeof define === 'function' && define.amd) {
 				element.appendChild(element.__resizeTriggers__);
 				resetTriggers(element);
 				element.addEventListener('scroll', scrollListener, true);
-				
+
 				/* Listen for a css animation to detect element display/re-attach */
 				animationstartevent && element.__resizeTriggers__.addEventListener(animationstartevent, function(e) {
 					if(e.animationName == animationName)
@@ -30367,7 +30385,7 @@ if (typeof define === 'function' && define.amd) {
 			element.__resizeListeners__.push(fn);
 		}
 	};
-	
+
 	window.removeResizeListener = function(element, fn){
 		if (attachEvent) element.detachEvent('onresize', fn);
 		else {
@@ -30738,7 +30756,7 @@ if (typeof define === 'function' && define.amd) {
 
 ;
 /****************************************************************************
-	modernizr-javascript.js, 
+	modernizr-javascript.js,
 
 	(c) 2016, FCOO
 
@@ -30749,20 +30767,20 @@ if (typeof define === 'function' && define.amd) {
 
 (function ($, window, document, undefined) {
 	"use strict";
-	
+
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){ 
-            return this.modernizrToggle( test, true ); 
+        modernizrOn : function( test ){
+            return this.modernizrToggle( test, true );
         },
 
-        modernizrOff: function( test ){ 
-            return this.modernizrToggle( test, false ); 
+        modernizrOff: function( test ){
+            return this.modernizrToggle( test, false );
         },
-        
-        modernizrToggle: function( test, on ){ 
+
+        modernizrToggle: function( test, on ){
 		if ( on === undefined )
             return this.modernizrToggle( test, !this.hasClass( test ) );
 
@@ -33624,19 +33642,19 @@ if (typeof define === 'function' && define.amd) {
 ;
 /* @preserve
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2013-2018 Petka Antonov
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -33644,7 +33662,7 @@ if (typeof define === 'function' && define.amd) {
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  */
 /**
  * bluebird build version 3.7.2
@@ -37236,28 +37254,28 @@ _dereq_('./using.js')(Promise, apiRejection, tryConvertToPromise, createContext,
 _dereq_('./any.js')(Promise);
 _dereq_('./each.js')(Promise, INTERNAL);
 _dereq_('./filter.js')(Promise, INTERNAL);
-                                                         
-    util.toFastProperties(Promise);                                          
-    util.toFastProperties(Promise.prototype);                                
-    function fillTypes(value) {                                              
-        var p = new Promise(INTERNAL);                                       
-        p._fulfillmentHandler0 = value;                                      
-        p._rejectionHandler0 = value;                                        
-        p._promise0 = value;                                                 
-        p._receiver0 = value;                                                
-    }                                                                        
-    // Complete slack tracking, opt out of field-type tracking and           
-    // stabilize map                                                         
-    fillTypes({a: 1});                                                       
-    fillTypes({b: 2});                                                       
-    fillTypes({c: 3});                                                       
-    fillTypes(1);                                                            
-    fillTypes(function(){});                                                 
-    fillTypes(undefined);                                                    
-    fillTypes(false);                                                        
-    fillTypes(new Promise(INTERNAL));                                        
-    debug.setBounds(Async.firstLineError, util.lastLineError);               
-    return Promise;                                                          
+
+    util.toFastProperties(Promise);
+    util.toFastProperties(Promise.prototype);
+    function fillTypes(value) {
+        var p = new Promise(INTERNAL);
+        p._fulfillmentHandler0 = value;
+        p._rejectionHandler0 = value;
+        p._promise0 = value;
+        p._receiver0 = value;
+    }
+    // Complete slack tracking, opt out of field-type tracking and
+    // stabilize map
+    fillTypes({a: 1});
+    fillTypes({b: 2});
+    fillTypes({c: 3});
+    fillTypes(1);
+    fillTypes(function(){});
+    fillTypes(undefined);
+    fillTypes(false);
+    fillTypes(new Promise(INTERNAL));
+    debug.setBounds(Async.firstLineError, util.lastLineError);
+    return Promise;
 
 };
 
@@ -39882,37 +39900,42 @@ module.exports = ret;
 (function ($, window, Promise/*, document, undefined*/) {
     "use strict";
 
-    //Convert a reason to error-object
-    Promise.convertReasonToError = function( reason ){
-        var result = new Error(),
-            response = reason ? reason.response || {} : {};
-
-        result.name    = 'Error';
-        result.message = reason.message || '';
-        result.url     = response.url || '';
-        result.status  = response.status || '';
-        return result;
-    };
-
     //Create a default error-handle. Can be overwritten
-    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* reason, url */ ){};
+    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* error: {name, status, message, text, statusText}  */ ){};
+
+    function createErrorObject( reason, url ){
+        var response = reason.response,
+            text = response ? response.statusText :
+                    reason.message ? reason.message :
+                    reason;
+        return {
+            name      : 'Error',
+            status    : response ? response.status : null,
+            url       : url,
+            message   : text,
+            text      : text,
+            statusText: text
+        };
+    }
 
     //Set event handler for unhandled rejections
-    window.onunhandledrejection = function(e){
+    window.onunhandledrejection = function(e, promise){
         if (e && e.preventDefault)
             e.preventDefault();
 
-        if (e && e.detail){
-            var reason = e.detail.reason || {},
-                promise = e.detail.promise,
-                promiseOptions = promise.promiseOptions || {},
-                response = reason.response || {},
-                url = response.url || promiseOptions.url || '';
+        //Unknown why, but in some browwsers onunhandledrejection is called twice - one time with e.detail
+        if (e && e.detail)
+            return false;
 
-            //Call default error handler
-            Promise.defaultErrorHandler( reason, url );
-        }
+        var url = promise && promise.promiseOptions ? promise.promiseOptions.url : null;
+
+        Promise.defaultErrorHandler( createErrorObject( e, url ) );
     };
+
+    function callDefaultErrorHandle(reason, url){
+        return Promise.defaultErrorHandler( createErrorObject( reason, url ) );
+    }
+
 
     /**************************************************************
     Promise.fetch( url, options )
@@ -39935,8 +39958,6 @@ module.exports = ret;
         //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
         if (options.noCache)
             url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
-
-
 
         return new Promise(function(resolve, reject) {
             var wrappedFetch = function(n) {
@@ -40003,7 +40024,6 @@ module.exports = ret;
 
         if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
             var error = new Error("Invalid XML");
-            //error.response = response;
             throw error;
         }
         return xml;
@@ -40013,11 +40033,10 @@ module.exports = ret;
     Promise.get = function(url, options, resolve, reject, fin) {
         options = $.extend({}, {
             //Default options
-            url: url,
+            url                   : url,
             useDefaultErrorHandler: true,
             retries               : 0
         }, options || {} );
-
 
         resolve = resolve || options.resolve || options.done;
         reject  = reject  || options.reject  || options.fail;
@@ -40057,24 +40076,27 @@ module.exports = ret;
             result = result.then( resolve );
 
         //Adding error/reject promise
+        var defaultReject = function(reason){
+                return callDefaultErrorHandle(reason, options.url);
+            };
+
         if (reject){
             //If options.useDefaultErrorHandler => also needs to call => Promise.defaultErrorHandler
             if (options.useDefaultErrorHandler)
-                result = result.catch( function( /*reason, url */ ){
-                    reject.apply( null, arguments );
-                    return Promise.defaultErrorHandler.apply( null, arguments );
+                result = result.catch( function( reason ){
+                    reject( createErrorObject( reason, options.url ) );
+                    return defaultReject.call( null, reason );
                 });
             else
                 //Just use reject as catch
-                result = result.catch( reject );
-
+                result = result.catch( function( reason ){
+                    return reject( createErrorObject( reason, options.url ) );
+                });
         }
-        else {
+        else
             if (!options.useDefaultErrorHandler)
                 //Prevent the use of Promise.defaultErrorHandler
                 result = result.catch( function(){} );
-
-        }
 
         //Adding finally (if any)
         if (fin)
@@ -40113,12 +40135,6 @@ module.exports = ret;
                             $.extend( {}, options , { format: 'xml' }),
                             resolve, reject, fin );
     };
-
-
-    //Initialize/ready
-    $(function() {
-
-    });
 
 }(jQuery, this, Promise, document));
 
@@ -48926,7 +48942,7 @@ return PerfectScrollbar;
 
     var keys = ['Hours', 'Minutes', 'Seconds', 'Milliseconds'];
     var maxValues = [24, 60, 60, 1000];
-    
+
     // Capitalize first letter
     key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
 
@@ -51385,12 +51401,12 @@ options:
 })();
 
 ;
-/* 
-  @package NOTY - Dependency-free notification library 
-  @version version: 3.1.4 
-  @contributors https://github.com/needim/noty/graphs/contributors 
-  @documentation Examples and Documentation - http://needim.github.com/noty 
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
+/*
+  @package NOTY - Dependency-free notification library
+  @version version: 3.1.4
+  @contributors https://github.com/needim/noty/graphs/contributors
+  @documentation Examples and Documentation - http://needim.github.com/noty
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
 */
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -53423,7 +53439,7 @@ Promise$2.prototype = {
     The primary way of interacting with a promise is through its `then` method,
     which registers callbacks to receive either a promise's eventual value or the
     reason why the promise cannot be fulfilled.
-  
+
     ```js
     findUser().then(function(user){
       // user is available
@@ -53431,14 +53447,14 @@ Promise$2.prototype = {
       // user is unavailable, and you are given the reason why
     });
     ```
-  
+
     Chaining
     --------
-  
+
     The return value of `then` is itself a promise.  This second, 'downstream'
     promise is resolved with the return value of the first promise's fulfillment
     or rejection handler, or rejected if the handler throws an exception.
-  
+
     ```js
     findUser().then(function (user) {
       return user.name;
@@ -53448,7 +53464,7 @@ Promise$2.prototype = {
       // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
       // will be `'default name'`
     });
-  
+
     findUser().then(function (user) {
       throw new Error('Found user, but still unhappy');
     }, function (reason) {
@@ -53461,7 +53477,7 @@ Promise$2.prototype = {
     });
     ```
     If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-  
+
     ```js
     findUser().then(function (user) {
       throw new PedagogicalException('Upstream error');
@@ -53473,15 +53489,15 @@ Promise$2.prototype = {
       // The `PedgagocialException` is propagated all the way down to here
     });
     ```
-  
+
     Assimilation
     ------------
-  
+
     Sometimes the value you want to propagate to a downstream promise can only be
     retrieved asynchronously. This can be achieved by returning a promise in the
     fulfillment or rejection handler. The downstream promise will then be pending
     until the returned promise is settled. This is called *assimilation*.
-  
+
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -53489,9 +53505,9 @@ Promise$2.prototype = {
       // The user's comments are now available
     });
     ```
-  
+
     If the assimliated promise rejects, then the downstream promise will also reject.
-  
+
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -53501,15 +53517,15 @@ Promise$2.prototype = {
       // If `findCommentsByAuthor` rejects, we'll have the reason here
     });
     ```
-  
+
     Simple Example
     --------------
-  
+
     Synchronous Example
-  
+
     ```javascript
     let result;
-  
+
     try {
       result = findResult();
       // success
@@ -53517,9 +53533,9 @@ Promise$2.prototype = {
       // failure
     }
     ```
-  
+
     Errback Example
-  
+
     ```js
     findResult(function(result, err){
       if (err) {
@@ -53529,9 +53545,9 @@ Promise$2.prototype = {
       }
     });
     ```
-  
+
     Promise Example;
-  
+
     ```javascript
     findResult().then(function(result){
       // success
@@ -53539,15 +53555,15 @@ Promise$2.prototype = {
       // failure
     });
     ```
-  
+
     Advanced Example
     --------------
-  
+
     Synchronous Example
-  
+
     ```javascript
     let author, books;
-  
+
     try {
       author = findAuthor();
       books  = findBooksByAuthor(author);
@@ -53556,19 +53572,19 @@ Promise$2.prototype = {
       // failure
     }
     ```
-  
+
     Errback Example
-  
+
     ```js
-  
+
     function foundBooks(books) {
-  
+
     }
-  
+
     function failure(reason) {
-  
+
     }
-  
+
     findAuthor(function(author, err){
       if (err) {
         failure(err);
@@ -53593,9 +53609,9 @@ Promise$2.prototype = {
       }
     });
     ```
-  
+
     Promise Example;
-  
+
     ```javascript
     findAuthor().
       then(findBooksByAuthor).
@@ -53605,7 +53621,7 @@ Promise$2.prototype = {
       // something went wrong
     });
     ```
-  
+
     @method then
     @param {Function} onFulfilled
     @param {Function} onRejected
@@ -53617,25 +53633,25 @@ Promise$2.prototype = {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-  
+
     ```js
     function findAuthor(){
       throw new Error('couldn't find that author');
     }
-  
+
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-  
+
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-  
+
     @method catch
     @param {Function} onRejection
     Useful for tooling.
@@ -54562,7 +54578,7 @@ module.exports = g;
         //Therefore if iOS, we shall assume that PDF support is not available
         !isIOS && (
             //Modern versions of Firefox come bundled with PDFJS
-            isFirefoxWithPDFJS || 
+            isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
             supportsPdfMimeType || (
                 //Pity the poor souls still using IE
@@ -54763,22 +54779,27 @@ module.exports = g;
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
 
+    // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
+    $.BSASMODAL = $.BSASMODAL || {};
+
     //Add/Remove class "show" to .card
     function card_onShown(){
         var $this = $(this);
         if ($this.children('.collapse.show').length)
             $this.addClass('show');
     }
+
     function card_onHidden(){
         var $this = $(this);
         if (!$this.children('.collapse.show').length)
             $this.removeClass('show');
+        accordion_onChange($this);
     }
-
 
     //card_onShow_close_siblings: Close all open siblings when card is shown
     function card_onShow_close_siblings(){
-        $(this).siblings('.show').children('.collapse').collapse('hide');
+        var $this = $(this);
+        $this.siblings('.show').children('.collapse').collapse('hide');
     }
 
     //card_onShown_close_siblings: Close all open siblings when card is shown BUT without animation
@@ -54789,7 +54810,17 @@ module.exports = g;
             card_onShow_close_siblings.call(this);
             $this.removeClass('no-transition');
         }
+        accordion_onChange($this);
     }
+
+    //update_status: Create a
+    function accordion_onChange($element){
+        var $accordion = $element.parents('.accordion').last(),
+            onChange = $accordion.data('accordion_onChange');
+        if (onChange)
+            onChange($accordion, $accordion.bsAccordionStatus());
+    }
+
 
     /**********************************************************
     bsAccordion( options ) - create a Bootstrap-accordion
@@ -54819,13 +54850,14 @@ module.exports = g;
     **********************************************************/
     var accordionId = 0;
 
-    function bsAccordion_asModal( options ){
+    $.BSASMODAL.BSACCORDION = function( options ){
         return $.bsModal( $.extend( {
                               flexWidth: true,
                               content  : this,
                           }, options)
                );
-    }
+    };
+
 
     $.bsAccordion = function( options ){
         var id = 'bsAccordion'+ accordionId++;
@@ -54843,6 +54875,7 @@ module.exports = g;
         }
 
         var $result = $('<div/>')
+                        .addClass('BSACCORDION')
                         ._bsAddBaseClassAndSize( options )
                         .attr({
                             'id'      : id,
@@ -54868,7 +54901,7 @@ module.exports = g;
                             .on( 'shown.bs.collapse',  card_onShown )
                             .on( 'hidden.bs.collapse', card_onHidden )
                             .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
-/*HER*/                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
+                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
                             .appendTo( $result ),
                 headerAttr = {
                     'id'  : headerId,
@@ -54937,9 +54970,27 @@ module.exports = g;
         }); //End of $.each( options.list, function( index, opt ){
 
         $result.collapse(/*options*/);
-        $result.asModal = bsAccordion_asModal;
+
+        if (options.onChange){
+            $result.data('accordion_onChange', options.onChange);
+            options.onChange($result, $result.bsAccordionStatus());
+        }
 
         return $result;
+    };
+
+
+    //Extend $.fn with method to get status for an accordion open/slose status
+    $.fn.bsAccordionStatus = function(){
+        function getStatus($elem){
+            var result = [];
+            $elem.children('.card').each( function(index, elem){
+                var $elem = $(elem);
+                result[index] = $elem.hasClass('show') ? getStatus($elem.find('> .collapse > .card-block > .accordion')) : false;
+            });
+            return result.length ? result : true;
+        }
+        return getStatus(this);
     };
 
 
@@ -56949,11 +57000,29 @@ options
         }
     }
 
+    function _updateFixedAndFooterInOptions( options ){
+        //Adjust options if footer: true or extendedContent: true
+        //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
+        if (options.extended) {
+            //If common fixed content => add it as normal fixed content
+            if ((options.fixedContent === true) || (options.extended.fixedContent === true)) {
+                options.fixedContent = options.fixedContent === true ? options.extended.fixedContent : options.fixedContent;
+                options.extended.fixedContent = options.extended.fixedContent === true ? options.fixedContent : options.extended.fixedContent;
+            }
+
+            //If common footer content => add it as extended footer content
+            if ((options.footer === true) || (options.extended.footer === true)) {
+                options.footer = options.footer === true ? options.extended.footer : options.footer;
+                options.extended.footer = options.extended.footer === true ? options.footer : options.extended.footer;
+            }
+        }
+    }
+
+
     /******************************************************
     prototype for bsModal
     ******************************************************/
     var bsModal_prototype = {
-
         show  : function(){
                     this.modal('show');
 
@@ -57001,6 +57070,7 @@ options
             this.setHeaderIconEnabled(id, true);
         },
 
+
         /******************************************************
         update
         Empty and replace the content of the header, content, fixed-content, footer and
@@ -57013,7 +57083,7 @@ options
         update: function( options ){
             var _this = this;
             //***********************************************************
-            function updateElement( $element, newOptions, methodName, param ){
+            function updateElement( test, $element, newOptions, methodName, param ){
                 if ($element && newOptions){
                     $element.empty();
                     $element[methodName](newOptions, param);
@@ -57023,8 +57093,10 @@ options
 
             //Update header
             var $iconContainer = this.bsModal.$header.find('.header-icon-container').detach();
-            updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons');
+            updateElement(0, this.bsModal.$header, options, '_bsHeaderAndIcons');
             this.bsModal.$header.append($iconContainer);
+
+            _updateFixedAndFooterInOptions(options);
 
             //Update the tree size-contents
             $.each([null, 'minimized', 'extended'], function(index, id){
@@ -57032,16 +57104,13 @@ options
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement( containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
-                    updateElement( containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
-                    updateElement( containers.$footer,       contentOptions.footer === true ? '' : contentOptions.footer,       '_bsAddHtml' );
+                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+                    updateElement( 2, containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
+                    updateElement( 3, containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             });
-
-
             return this;
         }
-
     };
 
     /******************************************************
@@ -57049,7 +57118,7 @@ options
     Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
-    $.fn._bsModalBodyAndFooter = function(size, options, parts, className, noClassNameForFixed, noClassNameForFooter){
+    $.fn._bsModalBodyAndFooter = function(size, options, parts, className){
 
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
@@ -57071,14 +57140,15 @@ options
             $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
                     .addClass('modal-body-fixed')
-                    .toggleClass(className, !noClassNameForFixed)
+                    .addClass(className || '')
                     .addClass(scrollbarClass )
-                    .toggleClass('no-vertical-padding',         !!/*options*/fixedOptions.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',       !!/*options*/fixedOptions.noHorizontalPadding)
-                    .toggleClass('modal-body-semi-transparent', !!/*options*/fixedOptions.semiTransparent)
-                    .toggleClass('modal-type-' + options.type,  !!/*options*/fixedOptions.type)
+                    .toggleClass('no-vertical-padding',         !!fixedOptions.noVerticalPadding)
+                    .toggleClass('no-horizontal-padding',       !!fixedOptions.noHorizontalPadding)
+                    .toggleClass('modal-body-semi-transparent', !!fixedOptions.semiTransparent)
+                    .toggleClass('modal-type-' + options.type,  !!fixedOptions.type)
                     .addClass(options.fixedClassName || '')
                     .appendTo( this );
+
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
 
@@ -57121,9 +57191,9 @@ options
         //Add footer
         parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header ' + (noClassNameForFooter ? '' : className))
+                    .addClass('modal-footer-header ' + className)
                     .appendTo( this )
-                    ._bsAddHtml( options.footer === true ? '' : options.footer );
+                    ._bsAddHtml( options.footer );
 
         //Add onClick to all elements - if nedded
         if (options.onClick){
@@ -57295,23 +57365,7 @@ options
         }
 
         //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
-        var noClassNameForFixed = false,
-            noClassNameForFooter = false;
-        if (options.extended) {
-            //If common fixed content => add it as normal fixed content
-            if ((options.fixedContent === true) || (options.extended.fixedContent === true)) {
-                noClassNameForFixed = true;
-                options.fixedContent = options.extended.fixedContent === true ? options.fixedContent : options.extended.fixedContent;
-                options.extended.fixedContent = '';
-            }
-
-            //If common footer content => add it as extended footer content
-            if ((options.footer === true) || (options.extended.footer === true)) {
-                noClassNameForFooter = true;
-                options.extended.footer = options.extended.footer === true ? options.footer : options.extended.footer;
-                options.footer = '';
-            }
-        }
+        _updateFixedAndFooterInOptions(options);
 
         //Create minimized content
         if (options.minimized){
@@ -57349,14 +57403,14 @@ options
                     modalDiminish :
                     null;
 
-        $modalContent._bsModalBodyAndFooter('normal', options, this.bsModal, '', noClassNameForFixed, false );
+        $modalContent._bsModalBodyAndFooter('normal', options, this.bsModal);
 
         //Create extended content (if any)
         if (options.extended){
             this.bsModal.extended = {};
             if (options.extended.clickable)
                 options.extended.onClick = options.extended.onClick || modalDiminish;
-            $modalContent._bsModalBodyAndFooter( 'extended', options.extended, this.bsModal.extended, '', false, noClassNameForFooter );
+            $modalContent._bsModalBodyAndFooter( 'extended', options.extended, this.bsModal.extended);
         }
 
         //Add buttons (if any). Allways hidden for minimized
@@ -58767,6 +58821,10 @@ options
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
+    // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
+    $.BSASMODAL = $.BSASMODAL || {};
+
+
 /******************************************************************
 bsTable( options )
 options
@@ -58905,6 +58963,78 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         return $element;
     }
 
+
+    /**********************************************************
+    asModal - display the table in a modal-window with fixed header and scrolling content
+    **********************************************************/
+    $.BSASMODAL.BSTABLE = function( modalOptions ){
+        var showHeader = this.find('.no-header').length == 0,
+            _this      = this,
+            $tableWithHeader,
+            $result, $thead, count;
+
+        if (showHeader){
+            //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
+            //Add on-click on the clone to 'pass' the click to the original header
+            this.$theadClone = this.find('thead').clone( true, false );
+
+            this.$theadClone.find('th').on('click', function( event ){
+                var columnIndex = $(event.delegateTarget).index();
+                _this.sortBy( columnIndex );
+            });
+
+            $tableWithHeader =
+                $('<table/>')
+                    ._bsAddBaseClassAndSize( this.data(dataTableId) )
+                    .addClass('table-with-header')
+                    .append( this.$theadClone );
+            $thead = this.find('thead');
+            count  = 20;
+        }
+
+        $result = $.bsModal(
+                        $.extend( modalOptions || {}, {
+                            flexWidth        : true,
+                            noVerticalPadding: true,
+                            content          : this,
+                            fixedContent     : $tableWithHeader
+                        })
+                      );
+
+        if (showHeader){
+            //Using timeout to wait for the browser to update DOM and get height of the header
+            var setHeaderHeight = this.setHeaderHeight = function(){
+                    var height = $tableWithHeader.outerHeight();
+                    if (height <= 0){
+                        count--;
+                        if (count){
+                            //Using timeout to wait for the browser to update DOM and get height of the header
+                            setTimeout( setHeaderHeight, 50 );
+                            return;
+                        }
+                    }
+
+                    _this.css('margin-top', -height+'px');
+                    setHeaderWidth();
+
+                    //Only set header-height once
+                    $result.off('shown.bs.modal.table', setHeaderHeight );
+                },
+
+                setHeaderWidth = function(){
+                    $thead.find('th').each(function( index, th ){
+                        _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
+                            .width( $(th).width()+'px' );
+                    });
+                    $tableWithHeader.width( _this.width()+'px' );
+                };
+
+            $result.on('shown.bs.modal.table', setHeaderHeight );
+            $thead.resize( setHeaderWidth );
+        }
+
+        return $result;
+    };
 
     /**********************************************************
     Prototype for bsTable
@@ -59153,80 +59283,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (this.setHeaderHeight)
                 this.setHeaderHeight();
             return this;
-        },
-
-        /**********************************************************
-        asModal - display the table in a modal-window with fixed header and scrolling content
-        **********************************************************/
-        asModal: function( modalOptions ){
-            var showHeader = this.find('.no-header').length == 0,
-                _this      = this,
-                $tableWithHeader,
-                $result, $thead, count;
-
-            if (showHeader){
-                //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-                //Add on-click on the clone to 'pass' the click to the original header
-                this.$theadClone = this.find('thead').clone( true, false );
-
-                this.$theadClone.find('th').on('click', function( event ){
-                    var columnIndex = $(event.delegateTarget).index();
-                    _this.sortBy( columnIndex );
-                });
-
-                $tableWithHeader =
-                    $('<table/>')
-                        ._bsAddBaseClassAndSize( this.data(dataTableId) )
-                        .addClass('table-with-header')
-                        .append( this.$theadClone );
-                $thead = this.find('thead');
-                count  = 20;
-            }
-
-            $result = $.bsModal(
-                            $.extend( modalOptions || {}, {
-                                flexWidth        : true,
-                                noVerticalPadding: true,
-                                content          : this,
-                                fixedContent     : $tableWithHeader
-                            })
-                          );
-
-            if (showHeader){
-                //Using timeout to wait for the browser to update DOM and get height of the header
-                var setHeaderHeight = this.setHeaderHeight = function(){
-                        var height = $tableWithHeader.outerHeight();
-                        if (height <= 0){
-                            count--;
-                            if (count){
-                                //Using timeout to wait for the browser to update DOM and get height of the header
-                                setTimeout( setHeaderHeight, 50 );
-                                return;
-                            }
-                        }
-
-                        _this.css('margin-top', -height+'px');
-                        setHeaderWidth();
-
-                        //Only set header-height once
-                        $result.off('shown.bs.modal.table', setHeaderHeight );
-                    },
-
-                    setHeaderWidth = function(){
-                        $thead.find('th').each(function( index, th ){
-                            _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
-                                .width( $(th).width()+'px' );
-                        });
-                        $tableWithHeader.width( _this.width()+'px' );
-                    };
-
-                $result.on('shown.bs.modal.table', setHeaderHeight );
-                $thead.resize( setHeaderWidth );
-            }
-
-            return $result;
         }
-
     }; //end of bsTable_prototype = {
 
     /**********************************************************
@@ -59235,6 +59292,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     var tableId    = 0,
         rowId      = 0,
         sortId     = 0;
+
+
 
     $.bsTable = function( options ){
 
@@ -59278,6 +59337,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         var id = 'bsTable'+ tableId++,
             $table = $('<table/>')
+                        .addClass('BSTABLE')
                         ._bsAddBaseClassAndSize( options )
                         .attr({
                             'id': id
@@ -59414,6 +59474,32 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
+    // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
+    $.BSASMODAL = $.BSASMODAL || {};
+
+
+    $.BSASMODAL.BSTABS = function( options ){
+        var $result =
+                $.bsModal(
+                    $.extend( {
+                        flexWidth          : true,
+                        noVerticalPadding  : true,
+                        noHorizontalPadding: true,
+                        scroll             : false,
+                        content            : this._$contents,
+                        fixedContent       : this._$tabs,
+                    }, options)
+               );
+
+        //Save ref to the scrollBar containing the content and update scrollBar when tab are changed
+        var $scrollBar = $result.data('bsModalDialog').bsModal.$content.parent();
+        this._$tabs.find('a').on('shown.bs.tab', function() {
+            $scrollBar.perfectScrollbar('update');
+        });
+
+        return $result;
+    };
+
     /******************************************************
     bsTabs
 <nav>
@@ -59431,7 +59517,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     ******************************************************/
     var tabsId = 0;
     $.bsTabs = function( options ){
-        var $result = $('<div/>'),
+        var $result = $('<div/>')
+                        .addClass('BSTABS'),
             id = 'bsTabs'+ tabsId++,
 
             $tabs =
@@ -59519,35 +59606,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 $content._bsAppendContent( opt.content, opt.contentContext );
 
         });
-        $result.asModal = bsTabs_asModal;
         $result._$tabs = $tabs;
         $result._$contents = $contents;
 
         return $result;
     };
-
-    function bsTabs_asModal( options ){
-        var $result =
-                $.bsModal(
-                    $.extend( {
-                        flexWidth          : true,
-                        noVerticalPadding  : true,
-                        noHorizontalPadding: true,
-                        scroll             : false,
-                        content            : this._$contents,
-                        fixedContent       : this._$tabs,
-                    }, options)
-               );
-
-        //Save ref to the scrollBar containing the content and update scrollBar when tab are changed
-        var $scrollBar = $result.data('bsModalDialog').bsModal.$content.parent();
-        this._$tabs.find('a').on('shown.bs.tab', function() {
-            $scrollBar.perfectScrollbar('update');
-        });
-
-        return $result;
-    }
-
 
     //Extend $.fn with method to select a tab given by id (string) or index (integer)
     $.fn.bsSelectTab = function( indexOrId ){
@@ -59592,7 +59655,29 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     //Create namespace
 	var ns = window;
 
-    ns.bsIsTouch =  true;
+    /*
+    Create $.BSASMODAL = record with {className: asModal-function} where className is added to any $element that have a asModal-function
+    Ex.:
+    $.BSASMODAL['BSTABLE'] = function(){ //Create bsModal for this }
+    var myTable = $.bsTable({...}); //Add 'BSTABLE' to class-name for  result
+    myTable.asModal({...});
+    */
+    $.BSASMODAL = $.BSASMODAL || {};
+    $.fn.asModal = function(options){
+        var _this   = this,
+            asModal = null;
+
+        $.each($.BSASMODAL, function(id, asModalFunc){
+            if (_this.hasClass(id)){
+                asModal = asModalFunc;
+                return false;
+            }
+        });
+        return asModal ? $.proxy(asModal, this)( options ) : null;
+    };
+
+
+    ns.bsIsTouch = true;
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
@@ -60235,6 +60320,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                           //Called when the list is updated.
                           //backwardAvail [BOOLEAN] true if it is possible to go backwards
                           //forwardAvail [BOOLEAN] true if it is possible to go forwards
+                       },
+            compare  : function( item1, item2 ){
+                           //Compare two items and return true if the two items are equal
+                           //Can be overwriten for other types of items
+                           return (item1 == item2);
                        }
 
         }, options || {} );
@@ -60264,6 +60354,19 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 	ns.HistoryList.prototype = {
 
         add: function( item ){
+            //Check:
+            if (this.addToList){
+                //1: Is item already the current item on the list => do not add
+                if ( this.list.length && this.options.compare(item, this.list[this.index]) )
+                    this.addToList = false;
+                else
+                    //2: Is item the next item => goForward
+                    if ((this.index < this.lastIndex) &&  this.options.compare(item, this.list[this.index+1]) ) {
+                        this.index++;
+                        this.addToList = false;
+                    }
+            }
+
             if (this.addToList){
                 this.index++;
                 this.list.splice(this.index);
@@ -65693,22 +65796,14 @@ if (typeof define === 'function' && define.amd) {
             }
             window.Promise.getText(
                 _this.options.url, {
-                    "resolve": function( content ){ _this.content = content; },
-                    "finally": _this._onLoad.bind(_this),
-                }
+                    resolve: _this._resolve.bind(_this),
+                    reject : _this._reject.bind(_this)
+            }
             );
         },
 
-        _onLoad: function(){
-            //If no expected content was loaded => go back to previous file (if any) or close the modal-window
-            if (!this.content){
-                if (this.historyList.index >= 0)
-                    this.historyList.goBack();
-                else
-                    this.bsModal.modal('hide');
-                return;
-            }
-
+        _resolve: function( content ){
+            this.content = content;
             this.$modalContainer.empty();
 
             //Convert content (if any) to html OR use header as content
@@ -65723,6 +65818,18 @@ if (typeof define === 'function' && define.amd) {
 
             //Remove fixed height set during loading
             this.$modalContainer.parent().css('height', 'initial');
+        },
+
+
+        _reject: function(){
+            //If no expected content was loaded => go back to previous file (if any) or close the modal-window
+            var closeModal = (this.historyList.index <= 0);
+            if (this.historyList.index >= 0){
+                this.historyList.goBack();
+                this.historyList.clearFuture();
+            }
+            if (closeModal)
+                this.bsModal.close();
         },
 
         _onClose: function(){
@@ -65756,7 +65863,7 @@ if (typeof define === 'function' && define.amd) {
                     flexWidth    : true,
                     extraWidth   : this.options.extraWidth,
 //                    noVerticalPadding
-                    content      : function( $container ){ _this.$modalContainer = $container; },
+                    content      : '&nbsp;',//function( $container ){ _this.$modalContainer = _this.$modalContainer || $container; },
                     scroll       : true,
 
                     historyList: this.historyList,
@@ -65797,6 +65904,8 @@ if (typeof define === 'function' && define.amd) {
                               }] : [],
 //                    closeText
                 });
+
+            this.$modalContainer = this.$modalContainer || this.bsModal.bsModal.$content;
 
             if (this.options.reset || (this.historyList.lastIndex <= 0)){
                 //Hide back- and forward-icons

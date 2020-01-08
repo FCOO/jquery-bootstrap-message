@@ -102,20 +102,32 @@
             });
         },
 
+        _closeCurrentMessageModal: function(){
+            //Close and remove modal for current message (if any)
+            if (!this.currentMessage) return;
+
+            if (this.currentMessage.bsMarkdown){
+                this.currentMessage.bsMarkdown.bsModal = null;
+                this.currentMessage.bsMarkdown.$modalContainer = null;
+                this.currentMessage.bsMarkdown = null;
+            }
+
+            if (this.currentMessage.currentModal){
+                this.currentMessage.currentModal.close();
+                this.currentMessage.currentModal.remove();
+                this.currentMessage.currentModal = null;
+            }
+            this.currentMessage = null;
+        },
+
         load: function(){
             var _this = this;
             this.isLoading = true;
 
-
-            if (this.bsModalMessage){
-                this.bsModalMessage.modal('hide');
-                this.bsModalMessage.remove();
-            }
-            this.bsModalMessage = null;
-
+            this._closeCurrentMessageModal();
 
             if (this.bsModal){
-                this.bsModal.modal('hide');
+                this.bsModal.close();
                 this.bsModal.remove();
             }
             this.bsModal = null;
@@ -127,16 +139,12 @@
             Promise
                 .all(
                     this.options.url.map( function( url, index ){
-                        return Promise.getJSON( url )
-                                   .then ( function( json ){
-                                       _this._add( json, url, index );
-                                   });
+                        return Promise.getJSON( url, {},
+                                   function( json ){ _this._add( json, url, index ); },
+                                   function(){ _this.error = true; }
+                               );
                     })
                 )
-                .catch( function(error) {
-                    _this.error = true;
-                    throw error;
-                })
                 .finally( this._finally.bind(this) );
         },
 
