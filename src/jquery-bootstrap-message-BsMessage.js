@@ -57,6 +57,9 @@
         this.options.status = this.parent.options.loadStatus( this );
         this.options.icons = this.parent.options.icons;
 
+        this.options.url  = this.parent.options.convertUrl( this.options.url  );
+        this.options.link = this.parent.options.convertUrl( this.options.link );
+
         /*
         Find the publishMoment = the moment where the message is published
         Used with options.expire and options.becomeRead to determinate if the messsage is expired or read
@@ -125,7 +128,7 @@
                     '<br>'
                 );
 
-            title.push( {text: this.options.title} );
+            title.push( {text: this.options.title, textClass:'mr-0'} );
 
             if (this.options.url)
                 title.push(

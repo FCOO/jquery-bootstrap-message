@@ -57,6 +57,9 @@
         this.options.status = this.parent.options.loadStatus( this );
         this.options.icons = this.parent.options.icons;
 
+        this.options.url  = this.parent.options.convertUrl( this.options.url  );
+        this.options.link = this.parent.options.convertUrl( this.options.link );
+
         /*
         Find the publishMoment = the moment where the message is published
         Used with options.expire and options.becomeRead to determinate if the messsage is expired or read
@@ -125,7 +128,7 @@
                     '<br>'
                 );
 
-            title.push( {text: this.options.title} );
+            title.push( {text: this.options.title, textClass:'mr-0'} );
 
             if (this.options.url)
                 title.push(
@@ -237,12 +240,13 @@
             },
             reloadPeriod  : '', //period-string with interval for reloading
 
-            onStartLoading : function( /*messageGroup*/){ },          //Called when loading of messages starts
-            onFinishLoading: function( /*messageGroup*/){ },          //Called when loading of messages finish
-            onErrorLoading : function( /*messageGroup*/){ },          //Called when loading of messages fails
+            convertUrl     : function( url ){ return url; }, //function to convert url (optional)
+            onStartLoading : function( /*messageGroup*/){ }, //Called when loading of messages starts
+            onFinishLoading: function( /*messageGroup*/){ }, //Called when loading of messages finish
+            onErrorLoading : function( /*messageGroup*/){ }, //Called when loading of messages fails
 
-            onCreate  : function( /*messageGroup*/){ },          //Called when group is created
-            onChange  : function( /*messageGroup*/){ },          //Called when the status of the group is changed. (Status=nr of messages, no of (un)read merssages)
+            onCreate  : function( /*messageGroup*/){ },      //Called when group is created
+            onChange  : function( /*messageGroup*/){ },      //Called when the status of the group is changed. (Status=nr of messages, no of (un)read merssages)
 
             loadStatus: function( /*message*/ ){ return true; }, //Return true if the message is read
             saveStatus: function( /*message [,status]*/ ){},     //Save the status for message
@@ -267,9 +271,14 @@
 		}, options || {} );
 
         //Convert url to array of string
-        if (!$.isArray(this.options.url))
+        //if (!$.isArray(this.options.url))
+        if ($.type(this.options.url) == 'string')
             this.options.url = this.options.url.split(' ');
 
+        var _this = this;
+        $.each(this.options.url, function(index, singleUrl){
+            _this.options.url[index] = _this.options.convertUrl(singleUrl);
+        });
 
         //convert reloadPeriod to ms
         if (this.options.reloadPeriod){

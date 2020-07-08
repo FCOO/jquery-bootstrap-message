@@ -8,7 +8,7 @@
         {
             "id": "1-1",
             "type": "warning",
-            "url": "data/browser/da.md",
+            "url": "data/browser/da.txt",
             "title": {"da":"test-1 Test af Operativsystemer og Browsere", "en":"Test of Operating Systems and Browsers"},
             "_link": "http://ifm.fcoo.dk/browser/"
         },

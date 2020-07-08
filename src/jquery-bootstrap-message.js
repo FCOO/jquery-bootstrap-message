@@ -24,12 +24,13 @@
             },
             reloadPeriod  : '', //period-string with interval for reloading
 
-            onStartLoading : function( /*messageGroup*/){ },          //Called when loading of messages starts
-            onFinishLoading: function( /*messageGroup*/){ },          //Called when loading of messages finish
-            onErrorLoading : function( /*messageGroup*/){ },          //Called when loading of messages fails
+            convertUrl     : function( url ){ return url; }, //function to convert url (optional)
+            onStartLoading : function( /*messageGroup*/){ }, //Called when loading of messages starts
+            onFinishLoading: function( /*messageGroup*/){ }, //Called when loading of messages finish
+            onErrorLoading : function( /*messageGroup*/){ }, //Called when loading of messages fails
 
-            onCreate  : function( /*messageGroup*/){ },          //Called when group is created
-            onChange  : function( /*messageGroup*/){ },          //Called when the status of the group is changed. (Status=nr of messages, no of (un)read merssages)
+            onCreate  : function( /*messageGroup*/){ },      //Called when group is created
+            onChange  : function( /*messageGroup*/){ },      //Called when the status of the group is changed. (Status=nr of messages, no of (un)read merssages)
 
             loadStatus: function( /*message*/ ){ return true; }, //Return true if the message is read
             saveStatus: function( /*message [,status]*/ ){},     //Save the status for message
@@ -54,9 +55,14 @@
 		}, options || {} );
 
         //Convert url to array of string
-        if (!$.isArray(this.options.url))
+        //if (!$.isArray(this.options.url))
+        if ($.type(this.options.url) == 'string')
             this.options.url = this.options.url.split(' ');
 
+        var _this = this;
+        $.each(this.options.url, function(index, singleUrl){
+            _this.options.url[index] = _this.options.convertUrl(singleUrl);
+        });
 
         //convert reloadPeriod to ms
         if (this.options.reloadPeriod){
