@@ -51,8 +51,11 @@
             vfFormat  : '',     //Format-id for the date using jquery-value-format. The format must be defined in the application. If vfFormat == '' the date-column isn't shown
             vfOptions : null,   //Optional options for the format vfFormat when displaying the date using jquery-value-format
 
-            loading   : { icon: 'fa-circle-notch fa-spin', text: {da:'Indlæser...', en:'Loading...'}}        //Default icon and text displayed in the modal-window during loading
-		}, options || {} );
+            loading   : { icon: 'fa-circle-notch fa-spin', text: {da:'Indlæser...', en:'Loading...'}}, //Default icon and text displayed in the modal-window during loading
+
+            dontLoad  : false   //If true the message-group will not load its data on creation
+
+        }, options || {} );
 
         //Convert url to array of string
         //if (!$.isArray(this.options.url))
@@ -73,7 +76,8 @@
                 0;
         }
 
-        this.load();
+        if (!this.options.dontLoad)
+            this.load();
     }
 
     // expose access to the constructor

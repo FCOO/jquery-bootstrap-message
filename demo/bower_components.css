@@ -9730,20 +9730,25 @@ Icons for modal header inside a container
       opacity: .75; }
       .header-icon-container .header-icon:not(.disabled):hover:active {
         opacity: .9; }
-    .header-icon-container .header-icon.header-icon-close * {
+    .header-icon-container .header-icon.header-icon-colored-background * {
       text-shadow: none; }
-    .header-icon-container .header-icon.header-icon-close .back {
+    .header-icon-container .header-icon.header-icon-colored-background .back {
       color: transparent; }
-    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover {
+    .header-icon-container .header-icon.header-icon-colored-background:not(.disabled):hover {
       opacity: .9; }
-      .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:active {
+      .header-icon-container .header-icon.header-icon-colored-background:not(.disabled):hover:active {
         opacity: 1; }
-      .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .back {
-        color: #dc3545; }
-      .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .middle {
-        color: white; }
-      .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .front {
-        color: #dc3545; }
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .back {
+      color: #dc3545; }
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .middle {
+      color: white; }
+    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover .front {
+      color: #dc3545; }
+    .header-icon-container .header-icon.header-icon-warning .middle {
+      font-size: .6em;
+      position: relative;
+      top: -0.25em;
+      left: -.3em; }
 
 /**************************************************
 CHECKBOX
