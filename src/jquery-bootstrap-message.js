@@ -130,8 +130,7 @@
             this.currentMessage = null;
         },
 
-        load: function(){
-            var _this = this;
+        preLoad: function(){
             this.isLoading = true;
 
             this._closeCurrentMessageModal();
@@ -144,40 +143,38 @@
 
             this.list = [];
             this.bsTable = null;
-            this.error = false;
+
             this.options.onStartLoading( this );
-            Promise
-                .all(
-                    this.options.url.map( function( url, index ){
-                        return Promise.getJSON( url, {},
-                                   function( json ){ _this._add( json, url, index ); },
-                                   function(){ _this.error = true; }
-                               );
-                    })
-                )
-                .finally( this._finally.bind(this) );
         },
 
-        _finally: function(){
-            var _this = this,
-                reloadPeriod = 0;
-            if (this.error){
-                this.options.onErrorLoading( this );
-                this.retryPeriod = Math.min( this.options.reloadPeriod || 60*60*1000,  this.retryPeriod ? this.retryPeriod*1.5 : 1000 );
-                reloadPeriod = this.retryPeriod;
-            }
-            else {
-                this.isLoading = false;
-                this.retryPeriod = 0;
-                this.sort();
-                this.options.onCreate( this );
-                this.options.onFinishLoading( this );
-                this._onChange();
-                reloadPeriod = this.options.reloadPeriod;
-            }
-            if (reloadPeriod){
-                window.setTimeout( function(){ _this.load(); }, reloadPeriod );
-            }
+        load: function(){
+            this.preLoad();
+
+            Promise
+                .all( this.options.url.map( function(url){ return Promise.getJSON(url); }) )
+                .then ( $.proxy(this.resolve, this), $.proxy(this.reject, this) );
+        },
+
+        resolve: function( jsonList ){
+            var _this = this;
+            $.each(jsonList, function(index, json){
+                _this._add( json, _this.options.url[index], index );
+            });
+
+            this.isLoading = false;
+            this.retryPeriod = 0;
+            this.sort();
+            this.options.onCreate( this );
+            this.options.onFinishLoading( this );
+            this._onChange();
+            if (this.options.reloadPeriod)
+                window.setTimeout( $.proxy(this.load, this), this.options.reloadPeriod );
+        },
+
+        reject: function(){
+            this.options.onErrorLoading( this );
+            this.retryPeriod = Math.min( this.options.reloadPeriod || 60*60*1000,  this.retryPeriod ? this.retryPeriod*1.5 : 1000 );
+            window.setTimeout( $.proxy(this.load, this), this.retryPeriod );
         },
 
         _onChange: function(){
