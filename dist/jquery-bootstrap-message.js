@@ -274,14 +274,8 @@
         }, options || {} );
 
         //Convert url to array of string
-        //if (!$.isArray(this.options.url))
         if ($.type(this.options.url) == 'string')
             this.options.url = this.options.url.split(' ');
-
-        var _this = this;
-        $.each(this.options.url, function(index, singleUrl){
-            _this.options.url[index] = _this.options.convertUrl(singleUrl);
-        });
 
         //convert reloadPeriod to ms
         if (this.options.reloadPeriod){
@@ -291,6 +285,7 @@
                 this.options.reloadPeriod.as('ms') :
                 0;
         }
+        this.firstLoad = true;
 
         if (!this.options.dontLoad)
             this.load();
@@ -313,13 +308,12 @@
             $.each( options.messages || [], function( index, messageOptions ){
                 _this.list.push(
                     $.bsMessage(
-                        $.extend(
-                            {
-                                index     : index,
-                                totalIndex: urlIndex*10000 + index,
-                                urlIndex  : urlIndex,
-                                urlId     : urlId
-                            },
+                        $.extend({
+                            index     : index,
+                            totalIndex: urlIndex*10000 + index,
+                            urlIndex  : urlIndex,
+                            urlId     : urlId
+                        },
                             defaultMessageOptions,
                             messageOptions
                         ),
@@ -364,17 +358,26 @@
         },
 
         load: function(){
+            var _this = this;
             this.preLoad();
 
+            if (this.firstLoad){
+                this.firstLoad = false;
+                $.each(this.options.url, function(index, singleUrl){
+                    _this.options.url[index] = _this.options.convertUrl(singleUrl);
+                });
+            }
             Promise
                 .all( this.options.url.map( function(url){ return Promise.getJSON(url); }) )
-                .then ( $.proxy(this.resolve, this), $.proxy(this.reject, this) );
+                .then ( $.proxy(this.resolve, this) )
+                .catch( $.proxy(this.reject,  this) );
         },
 
         resolve: function( jsonList ){
             var _this = this;
             $.each(jsonList, function(index, json){
-                _this._add( json, _this.options.url[index], index );
+                if (json)
+                    _this._add( json, _this.options.url[index], index );
             });
 
             this.isLoading = false;
@@ -387,7 +390,8 @@
                 window.setTimeout( $.proxy(this.load, this), this.options.reloadPeriod );
         },
 
-        reject: function(){
+        reject: function(error){
+            Promise.defaultErrorHandler(error);
             this.options.onErrorLoading( this );
             this.retryPeriod = Math.min( this.options.reloadPeriod || 60*60*1000,  this.retryPeriod ? this.retryPeriod*1.5 : 1000 );
             window.setTimeout( $.proxy(this.load, this), this.retryPeriod );
