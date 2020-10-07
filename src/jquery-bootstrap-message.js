@@ -57,9 +57,12 @@
 
         }, options || {} );
 
-        //Convert url to array of string
+        //Convert url to array of string or objects
         if ($.type(this.options.url) == 'string')
             this.options.url = this.options.url.split(' ');
+
+        if (!$.isArray(this.options.url))
+            this.options.url = [this.options.url];
 
         //convert reloadPeriod to ms
         if (this.options.reloadPeriod){
