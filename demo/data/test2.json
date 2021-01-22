@@ -15,10 +15,10 @@
         {
             "id": "2-2",
             "type": "help",
-            "url": "",
+            "url": "data/test1.txt",
             "title": {"da":"test2-2 >> >> >> >> >> >> PUBLISH Dette er en meget lang hjælp-besked 5, der handler om alt muligt", "en":">> >> >> >> >> >> >> >> PUBLISH This is a HELP message 5"},
-            "date": "2016-11-01",
-            "publish": false,
+            "date": "2020-11-01",
+            "publish": true,
             "expire" : "P2Y"
         },
         {

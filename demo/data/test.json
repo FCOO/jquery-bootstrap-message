@@ -32,7 +32,8 @@
             "id": "1-4",
             "type": "error",
             "url": "",
-            "title": {"da":"test-4 Dette er en meget lang error-besked, der handler om alt muligt", "en":"This is a error message"}
+            "title": {"da":"test-4 Dette er en meget lang error-besked, der handler om alt muligt", "en":"This is a error message"},
+            "showOnLoad": true
         },
         {
             "id": "1-5",

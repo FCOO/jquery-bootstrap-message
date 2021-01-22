@@ -125,7 +125,9 @@
                 this.currentMessage.currentModal.remove();
                 this.currentMessage.currentModal = null;
             }
-            this.currentMessage = null;
+            this.currentMessage = this.currentMessage.otherMessage;
+            if (this.currentMessage)
+                this._closeCurrentMessageModal();
         },
 
         preLoad: function(){
@@ -158,8 +160,7 @@
             Promise
                 .all( this.options.url.map( function(url){ return Promise.getJSON(url); }) )
                 .then   ( $.proxy(this.resolve, this) )
-                .catch  ( $.proxy(this.reject,  this) )
-                .finally( $.proxy(this.finally, this) );
+                .catch  ( $.proxy(this.reject,  this) );
         },
 
         resolve: function( jsonList ){
@@ -178,6 +179,13 @@
 
             if (this.options.reloadPeriod)
                 window.setTimeout( $.proxy(this.load, this), this.options.reloadPeriod );
+
+            //Show all messages marked to be shown on load
+            $.each( this.list, function( index, message ){
+                if (message.options.showOnLoad)
+                    message.asBsModal(true, true);
+            });
+
         },
 
         reject: function(error){
@@ -189,15 +197,6 @@
 
         _onChange: function(){
             this.options.onChange( this );
-        },
-
-
-        finally: function(){
-            //Show all messages marked to be shown on load
-            $.each( this.list, function( index, message ){
-                if (message.options.showOnLoad)
-                    message.asBsModal(true);
-            });
         },
 
 

@@ -150,9 +150,14 @@
         /**********************************************
         asBsModal - return a bsModal with all messages
         **********************************************/
-        asBsModal: function( show ){
-            this.parent._closeCurrentMessageModal();
+        asBsModal: function( show, dontCloseOther ){
+            if (dontCloseOther)
+                this.otherMessage = this.parent.currentMessage;
+            else
+                this.parent._closeCurrentMessageModal();
+
             this.parent.currentMessage = this;
+
 
             this.setStatus( true );
             var footer = this.parent.options.vfFormat ? {
