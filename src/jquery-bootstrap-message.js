@@ -35,6 +35,7 @@
             loadStatus: function( /*message*/ ){ return true; }, //Return true if the message is read
             saveStatus: function( /*message [,status]*/ ){},     //Save the status for message
 
+            showOnLoad: function( /*message*/ ){ return false; }, //Return true if the message must be shown on load
 
             sortBy    : 'INDEX', //String or array of string: 'INDEX', 'DATE', STATUS', 'TYPE'
             sortDesc  : false,
@@ -156,8 +157,9 @@
             }
             Promise
                 .all( this.options.url.map( function(url){ return Promise.getJSON(url); }) )
-                .then ( $.proxy(this.resolve, this) )
-                .catch( $.proxy(this.reject,  this) );
+                .then   ( $.proxy(this.resolve, this) )
+                .catch  ( $.proxy(this.reject,  this) )
+                .finally( $.proxy(this.finally, this) );
         },
 
         resolve: function( jsonList ){
@@ -173,6 +175,7 @@
             this.options.onCreate( this );
             this.options.onFinishLoading( this );
             this._onChange();
+
             if (this.options.reloadPeriod)
                 window.setTimeout( $.proxy(this.load, this), this.options.reloadPeriod );
         },
@@ -187,6 +190,16 @@
         _onChange: function(){
             this.options.onChange( this );
         },
+
+
+        finally: function(){
+            //Show all messages marked to be shown on load
+            $.each( this.list, function( index, message ){
+                if (message.options.showOnLoad)
+                    message.asBsModal(true);
+            });
+        },
+
 
         _getMessageById: function( id ){
             var result = null;

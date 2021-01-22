@@ -61,6 +61,7 @@
             sortBy: 'INDEX',
             //sortDesc: true,
             loadStatus     : function( message) { return (message.options.index % 2) == 1; },
+            showOnLoad     : function( message) { return message.options.showOnLoad; },
             onStartLoading : function( messageGroup ){ return; console.log('Start loading'); },
             onFinishLoading: function( messageGroup ){ return; console.log('Finish loading'); },
             onChange       : function( messageGroup ){ return; console.log('onChange', messageGroup.getAllStatus()); }

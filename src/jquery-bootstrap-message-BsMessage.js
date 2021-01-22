@@ -57,6 +57,8 @@
         this.options.status = this.parent.options.loadStatus( this );
         this.options.icons = this.parent.options.icons;
 
+        this.options.showOnLoad = this.parent.options.showOnLoad( this );
+
         this.options.url  = this.parent.options.convertUrl( this.options.url  );
         this.options.link = this.parent.options.convertUrl( this.options.link );
 
