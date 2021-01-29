@@ -239,6 +239,7 @@
             id            : '',
             url           : '',
             header        : '',
+            modalHeight   : null, //The total height of the modal with the list of messages
             icons: {
                 envelopeOpen  : 'fa-envelope-open',
                 envelopeClosed: 'fa-envelope',
@@ -621,6 +622,7 @@
             this.bsModal =
                 this.bsModal ||
                 this.asBsTable().asModal({
+                    height: this.options.modalHeight,
                     header: this.options.header,
                     buttons: this.options.showStatus ?
                                 [{
