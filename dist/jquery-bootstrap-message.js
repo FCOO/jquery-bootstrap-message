@@ -622,16 +622,16 @@
             this.bsModal =
                 this.bsModal ||
                 this.asBsTable().asModal({
-                    height: this.options.modalHeight,
-                    header: this.options.header,
-                    buttons: this.options.showStatus ?
-                                [{
-                                    icon   : this._getStatusIcon( true, true ),
-                                    text   : {da:'Márker alle som læst', en:'Mark all as read'},
-                                    onClick: function(){ _this.setAllStatus( true ); }
-                                }]
-                             : null,
-                    show  : false
+                    maxHeight: this.options.modalHeight,
+                    header   : this.options.header,
+                    buttons  : this.options.showStatus ?
+                                    [{
+                                        icon   : this._getStatusIcon( true, true ),
+                                        text   : {da:'Márker alle som læst', en:'Mark all as read'},
+                                        onClick: function(){ _this.setAllStatus( true ); }
+                                    }]
+                                : null,
+                    show     : false
                 });
 
             if (show)
