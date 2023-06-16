@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-message",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "homepage": "https://github.com/FCOO/jquery-bootstrap-message",
   "authors": [
     "Niels Holt"
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "jquery": "latest",
-    "jquery-bootstrap": "fcoo/jquery-bootstrap#^3.0.0",
+    "jquery-bootstrap": "fcoo/jquery-bootstrap#^3.20.0",
     "moment": "latest",
     "showdown": "^2.1.0",
     "promise-get": "fcoo/promise-get#^2.0.0",
